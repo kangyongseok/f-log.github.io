@@ -34,7 +34,7 @@ GCD라이브러리
 - default
 - utility
 - background (가장 시간이 오래 걸리는 작업)
-``` Swift
+``` java
 // Queue
 DispatchQueue.main.async {}
 DispatchQueue.global(qos: .background).async {}
