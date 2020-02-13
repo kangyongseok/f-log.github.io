@@ -47,3 +47,33 @@ URLSessionTask
 - URLSessionDownloadTask
 
 
+``` swift
+
+let urlstring = "https://itunes.apple.com/search?term=jack+johnson&entity=musicVideo"
+let url = URL(string: urlstring)
+url?.absoluteString
+url?.scheme
+url?.host
+url?.baseURL
+
+
+let baseURL = URL(string: "https://itunes.apple.com")
+let relativeURL = URL(string: "search?term=jack+johnson&entity=musicVideo", relativeTo: baseURL)
+
+relativeURL?.absoluteString
+relativeURL?.scheme
+relativeURL?.host
+relativeURL?.path
+relativeURL?.query
+relativeURL?.baseURL
+
+// URL Components
+var urlComponents = URLComponents(string: "https://itunes.apple.com/search?term=jack+johnson&entity=musicVideo")
+var queryItem = URLQueryItem(name: "term", value: "지드래곤")
+urlComponents?.queryItems?.append(queryItem)
+urlComponents?.url
+urlComponents?.string
+urlComponents?.queryItems
+
+
+```
