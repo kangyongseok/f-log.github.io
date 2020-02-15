@@ -48,7 +48,7 @@ URLSessionTask
 
 
 ``` swift
-
+<!-- 실습코드 1 -->
 let urlstring = "https://itunes.apple.com/search?term=jack+johnson&entity=musicVideo"
 let url = URL(string: urlstring)
 url?.absoluteString
@@ -76,4 +76,34 @@ urlComponents?.string
 urlComponents?.queryItems
 
 
+```
+
+``` swift
+<!-- 실습코드2 -->
+let config = URLSessionConfiguration.default
+let session = URLSession(configuration: config)
+
+var urlComponents = URLComponents(string: "https://itunes.apple.com/search?media=music&entity=song")!
+var queryItem = URLQueryItem(name: "term", value: "지드래곤")
+urlComponents.queryItems?.append(queryItem)
+let requestURL = urlComponents.url!
+
+
+let dataTask = session.dataTask(with: requestURL) { (data, response, error) in
+//    Client-side Error
+    guard error == nil else { return }
+    
+//    Server-side Error
+    guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { return }
+    let successRange = 200..<300
+    guard successRange.contains(statusCode) else {
+//       serverside error handle
+        return
+    }
+    
+    guard let resultData = data else { return }
+    print("---> Result Data: \(resultData)")
+}
+
+dataTask.resume()
 ```
