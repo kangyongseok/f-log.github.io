@@ -107,3 +107,133 @@ let dataTask = session.dataTask(with: requestURL) { (data, response, error) in
 
 dataTask.resume()
 ```
+
+
+``` swift
+<!-- 실습코드3 실제 요청작업 수행 -->
+import UIKit
+
+
+let config = URLSessionConfiguration.default
+let session = URLSession(configuration: config)
+
+var urlComponents = URLComponents(string: "https://itunes.apple.com/search?media=music&entity=song")!
+var queryItem = URLQueryItem(name: "term", value: "지드래곤")
+urlComponents.queryItems?.append(queryItem)
+let requestURL = urlComponents.url!
+
+
+let dataTask = session.dataTask(with: requestURL) { (data, response, error) in
+//    Client-side Error
+    guard error == nil else { return }
+    
+//    Server-side Error
+    guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { return }
+    let successRange = 200..<300
+    guard successRange.contains(statusCode) else {
+//       serverside error handle
+        return
+    }
+    
+    guard let resultData = data else { return }
+    
+//    Dara > Object
+    
+    do {
+        let jsonObject = try JSONSerialization.jsonObject(with: resultData, options: [])
+        if let dictionary = jsonObject as? [String: Any], let tracks = dictionary["results"] as? [[String: Any]] {
+            tracks.forEach({ (track: [String: Any]) in
+                let title = track["trackName"]
+                let artistName = track["artistName"]
+                let thumbnail = track["artworkUrl30"]
+                print("---> title: \(title), artist: \(artistName), thumb: \(thumbnail)")
+            })
+        }
+    } catch let error {
+        print("---> Result Data: \(error.localizedDescription)")
+    }
+    
+    print("---> Result Data: \(resultData)")
+}
+
+dataTask.resume()
+
+```
+
+
+``` swift
+<!-- 실습코드4 리팩토링 -->
+import UIKit
+
+
+let config = URLSessionConfiguration.default
+let session = URLSession(configuration: config)
+
+var urlComponents = URLComponents(string: "https://itunes.apple.com/search?media=music&entity=song")!
+var queryItem = URLQueryItem(name: "term", value: "지드래곤")
+urlComponents.queryItems?.append(queryItem)
+let requestURL = urlComponents.url!
+
+
+// model
+struct Track {
+    let title: String
+    let artistName: String
+    let thumbnail: String
+}
+
+
+func parse(data: Data) -> [Track]? {
+    
+    do {
+        let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+        var parsedTrackList: [Track] = []
+        
+        if let dictionary = jsonObject as? [String: Any], let tracks = dictionary["results"] as? [[String: Any]] {
+            
+            tracks.forEach({ (track: [String: Any]) in
+                if let title = track["trackName"] as? String,
+                    let artistName = track["artistName"] as? String,
+                    let thumbnail = track["artworkUrl30"] as? String {
+                    
+                    let track = Track(title: title, artistName: artistName, thumbnail: thumbnail)
+                    parsedTrackList.append(track)
+                }
+            })
+        }
+        
+        return parsedTrackList
+        
+    } catch let error {
+        print("---> Result Data: \(error.localizedDescription)")
+        return nil
+    }
+}
+
+var trackList: [Track] = []
+
+
+let dataTask = session.dataTask(with: requestURL) { (data, response, error) in
+//    Client-side Error
+    guard error == nil else { return }
+    
+//    Server-side Error
+    guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { return }
+    let successRange = 200..<300
+    guard successRange.contains(statusCode) else {
+//       serverside error handle
+        return
+    }
+    
+    guard let resultData = data else { return }
+    
+//    Dara > Object
+    
+    trackList = parse(data: resultData) ?? []
+    print("---> total tracks count: \(trackList.count)")
+}
+
+dataTask.resume()
+
+
+```
