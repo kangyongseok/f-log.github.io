@@ -49,6 +49,7 @@ URLSessionTask
 
 ``` swift
 <!-- 실습코드 1 -->
+
 let urlstring = "https://itunes.apple.com/search?term=jack+johnson&entity=musicVideo"
 let url = URL(string: urlstring)
 url?.absoluteString
@@ -80,6 +81,7 @@ urlComponents?.queryItems
 
 ``` swift
 <!-- 실습코드2 -->
+
 let config = URLSessionConfiguration.default
 let session = URLSession(configuration: config)
 
@@ -111,6 +113,7 @@ dataTask.resume()
 
 ``` swift
 <!-- 실습코드3 실제 요청작업 수행 -->
+
 import UIKit
 
 
@@ -163,6 +166,7 @@ dataTask.resume()
 
 ``` swift
 <!-- 실습코드4 리팩토링 -->
+
 import UIKit
 
 
@@ -235,5 +239,114 @@ let dataTask = session.dataTask(with: requestURL) { (data, response, error) in
 
 dataTask.resume()
 
+
+```
+
+
+
+``` swift
+<!-- 실습코드5 Codable 사용 -->
+
+import UIKit
+
+
+let config = URLSessionConfiguration.default
+let session = URLSession(configuration: config)
+
+var urlComponents = URLComponents(string: "https://itunes.apple.com/search?media=music&entity=song")!
+var queryItem = URLQueryItem(name: "term", value: "지드래곤")
+urlComponents.queryItems?.append(queryItem)
+let requestURL = urlComponents.url!
+
+
+// model
+
+// Codable 을 사용할 떄는 서버에서 보내주는 JSON 형태의 구조를 그대로 따라줘야 한다.
+struct Response: Codable {
+    let resultCount: Int
+    let results: [Track]
+}
+
+struct Track: Codable {
+    let title: String
+    let artistName: String
+    let thumbnail: String
+    
+//    JSON 사용시 decoding 키를 사용자 지정
+    enum CodingKeys: String, CodingKey {
+        case title = "trackName"
+        case artistName = "artistName"
+        case thumbnail = "artworkUrl30"
+    }
+    
+//    init?(json: [String: Any]) {
+//        guard let title = json["trackName"] as? String,
+//            let artistName = json["artistName"] as? String,
+//            let thumbnail = json["artworkUrl30"] as? String else {
+//            return nil
+//        }
+//
+//        self.title = title
+//        self.artistName = artistName
+//        self.thumbnail = thumbnail
+//    }
+}
+
+
+func parse(data: Data) -> [Track]? {
+    
+    do {
+        let decoder = JSONDecoder()
+        let response = try decoder.decode(Response.self, from: data)
+        let trackList = response.results
+        return trackList
+    } catch let error {
+        print("---> error: \(error.localizedDescription)")
+        return nil
+    }
+    
+//    do {
+//        let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+//        var parsedTrackList: [Track] = []
+//
+//        if let dictionary = jsonObject as? [String: Any], let tracks = dictionary["results"] as? [[String: Any]] {
+//
+//            parsedTrackList = tracks.compactMap { json in
+//                return Track(json: json)
+//            }
+//        }
+//
+//        return parsedTrackList
+//
+//    } catch let error {
+//        print("---> Result Data: \(error.localizedDescription)")
+//        return nil
+//    }
+}
+
+var trackList: [Track] = []
+
+
+let dataTask = session.dataTask(with: requestURL) { (data, response, error) in
+//    Client-side Error
+    guard error == nil else { return }
+    
+//    Server-side Error
+    guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { return }
+    let successRange = 200..<300
+    guard successRange.contains(statusCode) else {
+//       serverside error handle
+        return
+    }
+    
+    guard let resultData = data else { return }
+    
+//    Dara > Object
+    
+    trackList = parse(data: resultData) ?? []
+    print("---> total tracks count: \(trackList.count)")
+}
+
+dataTask.resume()
 
 ```
