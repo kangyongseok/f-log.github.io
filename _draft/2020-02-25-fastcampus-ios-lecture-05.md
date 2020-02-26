@@ -158,3 +158,15 @@ struct Book {
 }
 ```
 
+## 데이터 베이스 값 업데이트
+
+
+```swift
+func updateBasicTypes() {
+    let rootRef = Database.database().reference()
+    rootRef.updateChildValues(["int": 6])
+    rootRef.updateChildValues(["double": 5.4])
+    rootRef.updateChildValues(["array": ["cat", "banana"]])
+}
+```
+
