@@ -73,3 +73,39 @@ alert 을 화면에 띄우는 함수인것같다.
 - 앱은 오브젝트로 구성
 - 오브젝트 끼리 서로 메세지 보냄
 - 앱은 이벤트에 의해 프로세스 동작함(그전까지는 자고있는 상태)
+
+## 로컬변수 / 인스턴스변수
+
+``` swift
+import UIKit
+
+class ViewController: UIViewController {
+    
+    var currentValue = 0 // 인스턴스변수 - 오브젝트 내부에서 사용
+
+    @IBOutlet weak var priceLable: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        refresh()
+    }
+
+    @IBAction func showAlert(_ sender: Any) {
+        let message = "가격은 \(currentValue) 입니다." // 로컬변수 - 메소드 내부에서 사용
+        let alert = UIAlertController(title: "Hello", message: message, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "ok", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+        refresh()
+    }
+    
+    func refresh() {
+        let randomPrice = arc4random_uniform(10000) + 1 // 로컬변수
+        currentValue = Int(randomPrice)
+        priceLable.text = "₩\(currentValue)"
+    }
+}
+```
+
+
