@@ -145,51 +145,51 @@ gitflow 사용하여 팀원간에 협업이 원활하고 코드의 충돌과 잘
 
 
 ### Git Flow
-**기준 브랜치 생성**
-``` javascript
-// ts = test statging
-$ git flow feature start ts_200101
-```
+- [x] **기준 브랜치 생성**
+    ``` javascript
+    // ts = test statging
+    $ git flow feature start ts_200101
+    ```
   
   
-**작업 브랜치 생성**
-``` javascript
-$ git flow feature start feat_01
-```
+- [x] **작업 브랜치 생성**
+    ``` javascript
+    $ git flow feature start feat_01
+    ```
   
   
-**작업 브랜치 기준브랜치에 병합 준비**
-``` javascript
-// feature/feat_01
-$ git checkout develop
+- [x] **작업 브랜치 기준브랜치에 병합 준비**
+    ``` javascript
+    // feature/feat_01
+    $ git checkout develop
 
-// develop
-$ git pull
-$ git checkout feat_01
+    // develop
+    $ git pull
+    $ git checkout feat_01
 
-// feature/feat_01
-$ git rebase -i develop
-$ git push -force
-$ git checkout ts_020101
+    // feature/feat_01
+    $ git rebase -i develop
+    $ git push -force
+    $ git checkout ts_020101
 
-// feature/ts_200101
-$ git pull
-```
+    // feature/ts_200101
+    $ git pull
+    ```
   
     
 
-**기준브랜치에 병합**
-``` javascript
-$ git merge feat_01
-$ git push
-```
+- [x] **기준브랜치에 병합**
+    ``` javascript
+    $ git merge feat_01
+    $ git push
+    ```
   
   
-**staging 에 업데이트 작업**
-``` javascript
-// git flow release start 릴리즈브랜치명 릴리즈를딸브랜치명
-$ git flow release start staging_update ts_200101
+- [x] **staging 에 업데이트 작업**
+    ``` javascript
+    // git flow release start 릴리즈브랜치명 릴리즈를딸브랜치명
+    $ git flow release start staging_update ts_200101
 
-// release/staging_update
-$ git push
-```
+    // release/staging_update
+    $ git push
+    ```
