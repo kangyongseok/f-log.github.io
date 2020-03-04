@@ -16,31 +16,34 @@ comments:  true
 gitflow 사용하여 팀원간에 협업이 원활하고 코드의 충돌과 잘못된 코드의 배포를 방지하기 위한 규칙 및 전략  
   
 ## V1
-  - [X] develop 브랜치 기준으로 주 단위로 `[ feature/ts_브랜치생성날짜 ]` 로 기준브랜치를 생성  
-    ``` javascript
-    $ git flow feature start ts_200101
-    ```
-- [X] 기능추가에 대한 작업은 항상 develop 브랜치 기준으로 feature 브랜치 생성  
-    ``` javascript
-    $ git flow feature start create_login_component
-    ```
+- [X] develop 브랜치 기준으로 주 단위로 `[ feature/ts_브랜치생성날짜 ]` 로 기준브랜치를 생성      
+``` javascript
+$ git flow feature start ts_200101
+```
+- [X] 기능추가에 대한 작업은 항상 develop 브랜치 기준으로 feature 브랜치 생성   
+   
+``` javascript
+$ git flow feature start create_login_component
+```
 - [X] 작업이 완료되면 항상 develop 브랜치와의 rebase -i 작업을통해 최신상태 유지 후 기준브랜치 `[ feature/ts_브랜치생성날짜 ]` 에 merge 진행  
-    ``` javascript
-    $ git checkout develop
-    $ git pull
-    $ git checkout create_login_component
-    $ git rebase -i develop
-    $ git push --force
+  
+``` javascript
+$ git checkout develop
+$ git pull
+$ git checkout create_login_component
+$ git rebase -i develop
+$ git push --force
 
-    // github 에서 master 브랜치를 기준브랜치로 변경후 pull request 진행하고 커밋 메세지 작성후 이상없는지 체크후 merge 진행
-    ```
-
+// github 에서 master 브랜치를 기준브랜치로 변경후 pull request 진행하고 커밋 메세지 작성후 이상없는지 체크후 merge 진행
+```
+  
 
   
 - [x] 기준브랜치에서 staging 테스트 서버에 업데이트 하기위해 `[ git flow release start 브랜치명 feature/ts_브랜치생성날짜 ]` 로 기준브랜치 를 바라보는 상태로 release 브랜치를 생성하고 push 진행  
-    ``` javascript
-    $ git flow release start staging_test feature/ts_200101
-    ```
+  
+``` javascript
+$ git flow release start staging_test feature/ts_200101
+```
 - [x] staging 업데이트 주기는 특이사항 제외하고 점심전, 퇴근전 하루 두번으로 제한  
 - [x] 모든 테스트가 OK 사인이 나고 다음 업데이트 반영이 확실한 feature 브랜치 만 develop 브랜치 에 최종적으로 finish 한다.  
 - [x] 해당 Flow 의 안정화를 위해 지속적인 커뮤니케이션이 필요
@@ -59,65 +62,67 @@ gitflow 사용하여 팀원간에 협업이 원활하고 코드의 충돌과 잘
 
 
 - [x] 제출 develop 브랜치 기준으로 주 단위로 `feature/ts_생성날짜` 로 기준브랜치 생성
-    ```javascript
-    $ git flow feature start ts_200101
-    ```
+  
+```javascript
+$ git flow feature start ts_200101
+```
 
 - [x] 제출 기능추가작업은 develop 기준으로 feature 생성
-    ``` javascript
-    $ git flow feature start create_feat_name
-    ```
+  
+``` javascript
+$ git flow feature start create_feat_name
+```
 
 - [x] 제출 작업이 완료되면 develop 에 rebase 진행하고 기준브랜치에서 작업브랜치를 rebase 진행
+  
+``` javascript
+// feature/create_feat_name
+$ git add .
+$ git commit -m "feat: 메세지 작성"
+$ git push
+$ git checkout develop
 
-    ``` javascript
-    // feature/create_feat_name
-    $ git add .
-    $ git commit -m "feat: 메세지 작성"
-    $ git push
-    $ git checkout develop
+// develop
+$ git pull
+$ git checkout feature/create_feat_name
 
-    // develop
-    $ git pull
-    $ git checkout feature/create_feat_name
+// feature/create_feat_name
+$ git rebase -i develop
+$ git push --force
+$ git checkout feature/ts_200101
 
-    // feature/create_feat_name
-    $ git rebase -i develop
-    $ git push --force
-    $ git checkout feature/ts_200101
-
-    // feature/ts_200101
-    $ git pull
-    $ git rebase -i feature/create_feat_name
-    $ git push --force
-    ```
+// feature/ts_200101
+$ git pull
+$ git rebase -i feature/create_feat_name
+$ git push --force
+```
 
 - [x] 제출 기준브랜치에서 테스트 서버에 업로드 하기 위한 작업
+  
+``` javascript
+// feature/ts_200101
+$ git flow release start create_relese_name feature/ts_200101
 
-    ``` javascript
-    // feature/ts_200101
-    $ git flow release start create_relese_name feature/ts_200101
-
-    // release/create_relese_name
-    $ git push
-    ``` 
+// release/create_relese_name
+$ git push
+``` 
 
 
 - [x] 제출 테스트서버에서 확인이 끝나고 다음버전에 포함할 기능이면 develop 에 merge
+  
+``` javascript
+// feature/create_feat_name
+$ git checkout develop
 
-    ``` javascript
-    // feature/create_feat_name
-    $ git checkout develop
+// develop
+$ git pull
+$ git checkout feature/create_feat_name
 
-    // develop
-    $ git pull
-    $ git checkout feature/create_feat_name
-
-    // feature/create_feat_name
-    $ git rebase -i develop
-    $ git push --force
-    $ git flow feature finish create_feat_name
-    ```
+// feature/create_feat_name
+$ git rebase -i develop
+$ git push --force
+$ git flow feature finish create_feat_name
+```
 
 
 ## V3
@@ -146,50 +151,55 @@ gitflow 사용하여 팀원간에 협업이 원활하고 코드의 충돌과 잘
 
 ### Git Flow
 - [x] **기준 브랜치 생성**
-    ``` javascript
-    // ts = test statging
-    $ git flow feature start ts_200101
-    ```
+  
+``` javascript
+// ts = test statging
+$ git flow feature start ts_200101
+```
   
   
 - [x] **작업 브랜치 생성**
-    ``` javascript
-    $ git flow feature start feat_01
-    ```
+  
+``` javascript
+$ git flow feature start feat_01
+```
   
   
 - [x] **작업 브랜치 기준브랜치에 병합 준비**
-    ``` javascript
-    // feature/feat_01
-    $ git checkout develop
+  
+``` javascript
+// feature/feat_01
+$ git checkout develop
 
-    // develop
-    $ git pull
-    $ git checkout feat_01
+// develop
+$ git pull
+$ git checkout feat_01
 
-    // feature/feat_01
-    $ git rebase -i develop
-    $ git push -force
-    $ git checkout ts_020101
+// feature/feat_01
+$ git rebase -i develop
+$ git push -force
+$ git checkout ts_020101
 
-    // feature/ts_200101
-    $ git pull
-    ```
+// feature/ts_200101
+$ git pull
+```
   
     
 
 - [x] **기준브랜치에 병합**
-    ``` javascript
-    $ git merge feat_01
-    $ git push
-    ```
+  
+``` javascript
+$ git merge feat_01
+$ git push
+```
   
   
 - [x] **staging 에 업데이트 작업**
-    ``` javascript
-    // git flow release start 릴리즈브랜치명 릴리즈를딸브랜치명
-    $ git flow release start staging_update ts_200101
+  
+``` javascript
+// git flow release start 릴리즈브랜치명 릴리즈를딸브랜치명
+$ git flow release start staging_update ts_200101
 
-    // release/staging_update
-    $ git push
-    ```
+// release/staging_update
+$ git push
+```
