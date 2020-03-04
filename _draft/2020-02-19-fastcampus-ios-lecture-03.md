@@ -40,7 +40,7 @@ IOS 관련 패키지 관리 라이브러리 npm 과 비슷한것
 
 **Pods/podfile**
 ``` swift
-<!-- 아래 코드 추가 / 추가될떄마다 pod install 을 실행해 줘야함 -->
+<!-- 아래 코드 추가 / 추가될때마다 pod install 을 실행해 줘야함 -->
 pod 'Firebase/Core'
 pod 'Firebase/Analytics'
 pod 'Firebase/Database'

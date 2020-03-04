@@ -261,7 +261,7 @@ let requestURL = urlComponents.url!
 
 // model
 
-// Codable 을 사용할 떄는 서버에서 보내주는 JSON 형태의 구조를 그대로 따라줘야 한다.
+// Codable 을 사용할 때는 서버에서 보내주는 JSON 형태의 구조를 그대로 따라줘야 한다.
 struct Response: Codable {
     let resultCount: Int
     let results: [Track]
