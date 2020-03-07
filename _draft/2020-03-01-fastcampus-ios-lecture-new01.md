@@ -206,4 +206,60 @@ case (let x, let y) where x == y:
 default:
     print("---> 좌표 어딘가")
 }
-``
+```
+
+**func**
+
+``` swift
+
+// 함수호출기본형
+func printName() {
+    print("---> May name is jaon")
+}
+printName()
+
+
+
+// 함수호출 파라미터형
+func printMultipleOfTen(value: Int) {
+    print("\(value) * 10 = \(value * 10)")
+}
+printMultipleOfTen(value: 5)
+
+
+// 함수호출 다중파라미터형
+func printMultiplePriceCount(price: Int, count: Int) {
+    print("\(price * count)")
+}
+printMultiplePriceCount(price: 1000, count: 3)
+
+
+// _ : 파라미터 이름없이 받겠다는것
+func printTotalPrice(_ price: Int, _ count: Int) {
+    print("Total Price: \(price * count)")
+}
+printTotalPrice(1500, 5)
+
+
+// 함수호출 default 파라미터
+func printTotalPriceWithDefaultValue(price: Int = 1500, count: Int) {
+    print("---> Total Price: \(price * count), count: \(count)")
+}
+printTotalPriceWithDefaultValue(count: 3)
+printTotalPriceWithDefaultValue(count: 15)
+printTotalPriceWithDefaultValue(count: 1)
+printTotalPriceWithDefaultValue(count: 0)
+
+printTotalPriceWithDefaultValue(price: 2000, count: 1)
+
+
+// -> Int : 반환할 값의 타입 return 이 있어야 한다.
+func totalPrice(price: Int, count: Int) -> Int {
+    let totalPrice = price * count
+    return totalPrice
+}
+
+let price = totalPrice(price: 1000, count: 5)
+price
+
+```
