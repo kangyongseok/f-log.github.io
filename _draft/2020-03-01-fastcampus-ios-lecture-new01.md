@@ -108,4 +108,102 @@ class ViewController: UIViewController {
 }
 ```
 
+## Swift Flow Control
 
+**while**
+``` swift
+// -- While
+// 조건 맞으면 코드 진행
+var i = 10
+while i < 10 {
+    print(i)
+    
+//    if i == 5 {
+//        break
+//    }
+    i += 1
+}
+
+
+print("---- repeat")
+// 코드진행 조건확인
+i = 10
+repeat {
+    print(i)
+    i += 1
+} while i < 10
+```
+
+`repeat - while` 은 `javascript` 의 `do - while` 문과 같은동작인것같다.
+
+
+**for**
+``` swift
+import UIKit
+import Foundation
+
+let closedRange = 0...10 // 0~10 까지 표현
+let halfClosedRange = 0..<10 // 0~9 까지 표현
+
+var sum = 0
+for i in halfClosedRange {
+    print("---> \(i)")
+    sum += i
+}
+
+print("---> total sum: \(sum)")
+
+
+var sinValue: CGFloat = 0
+for i in closedRange {
+    sinValue = sin(CGFloat.pi/4 * CGFloat(i))
+}
+
+for i in closedRange {
+    if i % 2 == 0 {
+        print("---> 짝수: \(i)")
+    }
+}
+
+for i in closedRange where i % 2 == 0 {
+    print("---> 짝수: \(i)")
+}
+
+
+for i in closedRange {
+    if i == 3 {
+        continue
+    }
+    
+    print("---> \(i)")
+}
+```
+
+**switch**
+``` swift
+let num = 10
+
+switch num {
+case 0:
+    print("---> 0입니다.")
+case 0...10:
+    print("---> 0에서 10사이 입니다.")
+case 10:
+    print("---> 10입니다.")
+default:
+    print("---> 나머지 입니다")
+}
+
+let coordinate = (x: 10, y: 10)
+
+switch coordinate {
+case (0, 0):
+    print("---> 원점")
+case (let x, 0):
+    print("---> x축, x:\(x)")
+case (let x, let y) where x == y:
+    print("---> x 랑 y랑 같음 x, y = \(x), \(y)")
+default:
+    print("---> 좌표 어딘가")
+}
+``
