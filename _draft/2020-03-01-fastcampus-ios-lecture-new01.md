@@ -208,6 +208,7 @@ default:
 }
 ```
 
+## Function
 **func**
 
 ``` swift
@@ -262,4 +263,29 @@ func totalPrice(price: Int, count: Int) -> Int {
 let price = totalPrice(price: 1000, count: 5)
 price
 
+```
+
+**function 고급기능**
+``` swift
+func add(_ a: Int, _ b: Int) -> Int {
+    return a + b
+}
+
+func subtract(_ a: Int, _ b: Int) -> Int {
+    return a - b
+}
+
+
+var function = add
+function(4, 2)
+function = subtract
+function(4, 2)
+
+// 함수 파라미터로 함수를 넘기는것이 가능
+func printResult(_ function: (Int, Int) -> Int, _ a: Int, _ b: Int) {
+    let result = function(a, b)
+    print(result)
+}
+printResult(add, 10, 5)
+printResult(subtract, 10, 5)
 ```
