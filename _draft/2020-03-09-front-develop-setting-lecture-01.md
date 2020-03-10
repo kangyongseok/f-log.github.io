@@ -1,5 +1,5 @@
 ---
-title: "인프런 - 프론트엔드 개발환경의 이해와 실습"
+title: "인프런 - 프론트엔드 개발환경의 이해와 실습-01"
 categories: 
   - study
 tags: 
@@ -9,6 +9,7 @@ tags:
     - front
     - webpack
     - babel
+    - lint
     - npm
     - study
 toc: true
