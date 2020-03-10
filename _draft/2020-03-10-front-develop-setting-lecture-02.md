@@ -124,3 +124,38 @@ math.sum(1, 2); // 3
 그러나 모든 브라우저에서 이 모듈 사용방식을 지원하는것이 아니라는 단점이 있다. 그래서 이 부분을 자동화 하기위해 나온것이 웹팩이라고 볼 수 있겠다.  
 
 크롬이 아닌 다른 브라우저에서도 모듈시스템을 사용 할 수 있도록 번들을 통해 제일 처음에 나왔던 코드처럼 변환을 해준다고 볼 수 있을것같다.
+  
+모듈로 개발을 하다보면 무수히 많은 모듈이 생기고 그 모듈들간에 의존성도 생기게된다. 이러한 의존성을 가진 `.js` 파일들을 하나의 `.js` 로 합쳐주는것이 웹팩이 해주는 역할이라고 할 수 있다.
+
+## Webpack 실습
+``` javascript
+// webpack 과 webpack-cli 를 -D 옵션으로 개발용 패키지로 설치
+$ npm install -D webpack webpack-cli
+```
+
+``` json
+// package.json
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
+```
+
+웹팩을 실행하기 위해서는 `Config options` 중에 `--mode` 를 입력해야하는데 세가지 옵션이 있다.   
+`development` : 개발전용으로 실행할때 사용하는 옵션,   
+`production` : 실제 서버에 배포할때 사용하는 옵션,   
+`none`
+  
+`Basic option` 중에는  
+`--entry` : 모듈의 시작점 지점  
+
+`Output option`  
+`--output` : 저장할 지점
+
+``` javascript
+// mode: development
+// entry: ./src/app.js
+// output: dist/main.js 
+$ node_modules/.bin/webpack --mode development --entry ./src/app.js --output dist/main.js
+```
