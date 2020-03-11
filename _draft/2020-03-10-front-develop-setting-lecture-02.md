@@ -206,3 +206,152 @@ module.exports = {
 // 실행
 $ npm run build
 ```
+
+## 로더
+웹팩은 모든 파일은 모듈로 바라본다. `자바스크립트`를 포함 `css, font, img(jpg/png/gif..)` 까지 모듈로 보기때문에 `import`를 통해서 자바스크립트 코드안으로 가져올 수 있다.  
+
+이것을 가능하게 하는게 바로 로더이다.
+
+**my-webpack-laode.jsr**
+``` javascript
+module.exports = function myWebpackLoader (content) {
+    return content.replace('console.log(', 'alert(');
+}
+```
+
+**webpack.congif.js**
+
+``` javascript
+module: {
+    rules: [
+        {
+            test: /\.js$/, // .js 확장자로 끝나는 모든 파일
+            use: [path.resolve('./my-webpack-loader.js')] // my-webpack-loader.js 를 적용
+        }
+    ]
+}
+```
+
+위처럼 작성하게되면 `.js` 로 끝나는 파일들에 `console.log()` 들을 `alert()` 으로 변경해서 빌드하는것이 가능해진다.
+  
+
+## CSS Loader
+  
+``` javascript
+$ npm install css-loader
+```
+
+**webpack.config.js**
+``` javascript
+...
+module: {
+    rules: [
+        {
+            test: /\.css$/,
+            use: [
+                'css-loader'
+            ]
+        }
+    ]
+}
+```
+
+**src/app.css**
+``` css
+body {
+    background: red;
+}
+```
+
+이렇게 작성하고 `$ npm run build` 진행하면 main.js 내부에 css 가 들어가있는걸 볼 수 있지만 index.html 을 실행하고 개발자 도구를보면 아직 html 에 css가 들어가있지는 않다. 이걸 가능하게 하려면 `$ npm install style-loader` 를 설치해야한다.
+
+**webpack.config.js**
+``` javascript
+...
+module: {
+    rules: [
+        {
+            test: /\.css$/,
+            use: [
+                // loader 는 여러개 추가할 수 있는데 뒤에서부터 실행
+                'style-loader',
+                'css-loader'
+            ]
+        }
+    ]
+}
+```
+
+## Image Laoder
+
+``` javascript
+$ npm install file-loader
+```
+
+**src/app.css**
+``` css
+body {
+    background: url('test.png');
+}
+```
+
+**webpack.config.js**
+``` javascript
+module: {
+    rules: [
+        ...
+        {
+            test: /\.png$/,
+            use: [
+                'file-loader',
+            ]
+        }
+    ]
+}
+```
+
+`$ npm run build` => `dist/` 에 해싱으로 파싱된 파일명을 가진 이미지 파일이 하나 생성된다.  
+
+`index.html` 을 실행하여 웹을 열어보면 이미지가 아직 적용이 안된다. 바로 `css` 에적용한 `image` 루트가 잘못되어있기 때문이다.
+
+**webpack.config.js**
+``` javascript
+...
+{
+    test: /\.png$/,
+    loader: 'file-loader',
+    options: {
+        /*
+        [name] : file-loader 가 output 에 복사할때 쓰는 파일명
+        [ext] : 확장자명
+        [hash] : 매번 달라지는 hash 값 입력
+        */
+        publicPath: './dist', // output 폴더명 path를 설정해준다.
+        name: '[name].[ext]?[hash]'
+    }
+}
+```
+
+## URL Loader
+사용하는 이미지 갯수가 많아지면 네트워크 리소스를 사용하는데 부담이 생기고 성능에 영향을 미칠 수 있다.  
+
+한페이지에서 작은 여러 이미지를 사용한다면 Data URI Scheme 를 이용하는게 더 낫다. 이미지를 Base64 로 인코딩하여 문자열 형태로 소스코드에 넣는 형식인데 url-loader 는 이 처리를 자동화해준다.
+
+``` javascript
+$ npm install -D url-loader
+```
+
+**webpack.config.js**
+``` javascript
+// 20kb 이하의 이미지파일은 base64 로 변환하여 <img src="" /> 에 들어가고 그 이상의 파일들은 복사를통해 './dist' 폴더안에 들어가게 된다.
+...
+{
+    test: /\.(png|jpg|gif|svg)$/,
+    loader: 'url-loader',
+    options: {
+        publicPath: './dist',
+        name: '[name].[ext]?[hash]',
+        limit: 20000, // 20kb
+    }
+}
+```
