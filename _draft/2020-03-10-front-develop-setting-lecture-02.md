@@ -158,4 +158,51 @@ $ npm install -D webpack webpack-cli
 // entry: ./src/app.js
 // output: dist/main.js 
 $ node_modules/.bin/webpack --mode development --entry ./src/app.js --output dist/main.js
+
+// console
+Hash: 6667e6ce7ba6b7c8991f
+Version: webpack 4.42.0
+Time: 44ms
+Built at: 2020. 03. 11. 오전 5:38:01
+  Asset      Size  Chunks             Chunk Names
+main.js  3.79 KiB    null  [emitted]  null
+Entrypoint null = main.js
+[./src/app.js] 28 bytes {null} [built]
+```
+
+이렇게 실행하면 `dist/main.js` 라는 티렉토리가 하나 생성되고 
+``` html
+<body>
+    <script type="module" src="dist/main.js"></script>
+</body>
+```
+스크립트파일도 이렇게 하나만 불러오면 된다.  
+
+웹팩을 실행하기위한 명령어 옵션은 저것뿐만아니라 더 늘어나고 또 환경별로 다르게 설정되어지는 부분이 있는데 그럴떄마다 매번 저렇게 긴 옵션을 입력하면서 실행할 수 없기때문에 이것을 설정하기위한 `webpack.config.js` 파일을 생성하고 여기에 웹팩 실행 옵션들을 설정한다.
+
+``` javascript
+const path = require('path');
+
+module.exports = {
+    mode: 'development',
+    entry: {
+        main: './src/app.js' // 의존관계가 있는 모듈의 시작점
+    },
+    output: { // 번들링한 결과를 output option 에 따라 생성
+        path: path.resolve('./dist'),
+        filename: '[name].js' // entry 가 여러개일수 있어서 이렇게 설정
+    },
+}
+```
+
+그리고 웹팩을 실행하기위한 명령어를 `package.json` 에 입력해준다.
+``` json
+"scripts": {
+    ...
+    "build": "webpack"
+},
+```
+``` javascript
+// 실행
+$ npm run build
 ```
