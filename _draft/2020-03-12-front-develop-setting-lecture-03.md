@@ -24,3 +24,53 @@ comments:  true
 - 특정 텍스트 추출
   
 
+``` javascript
+// my-webpack-plugin
+class MyWebpackPlugin {
+    apply(compiler) {
+        compiler.plugin('emit', (compilation, callback) => {
+            const source = compilation.assets['main.js'].source(); // 번들링된 main.js 소스코드 가져오는 코드
+            compilation.assets['main.js'].source = () => {
+                const banner = [
+                    '/**',
+                    ' * 이것은 BannerPlugin이 처리한 결과입니다.',
+                    ' * Build Date: 2020-01-01',
+                    '*/'
+                ].join('\n');
+                return banner + '\n\n' + source; // 원본소스코드에 주석문 추가
+            }
+
+            callback();
+        })
+    }
+}
+
+module.exports = MyWebpackPlugin;
+```
+
+``` javascript
+// webpack.config.js
+const MyWebpackPlugin = require('./my-webpack-pluigin');
+
+module.exports = {
+    ...
+    plugins: [
+        new MyWebpackPlugin(),
+    ]
+}
+```
+
+``` javascript
+$ npm run build
+```
+
+``` javascript
+// dist/main.js
+
+/**,
+* 이것은 BannerPlugin이 처리한 결과입니다.,
+* Build Date: 2020-01-01,
+*/
+
+...
+```
