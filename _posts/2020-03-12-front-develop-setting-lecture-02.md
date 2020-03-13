@@ -12,6 +12,7 @@ tags:
     - lint
     - npm
     - study
+    - loader
 toc: true
 toc_sticky: true
 comments:  true
