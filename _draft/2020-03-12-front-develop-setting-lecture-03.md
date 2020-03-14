@@ -74,3 +74,12 @@ $ npm run build
 
 ...
 ```
+
+
+## 자주사용하는 플러그인
+
+- BannerPlugin
+- DefinePlugin
+- HtmlWebpackPlugin
+- CleanWebpackPlugin
+- MiniCssExtraPlugin
