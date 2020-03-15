@@ -83,3 +83,15 @@ $ npm run build
 - HtmlWebpackPlugin
 - CleanWebpackPlugin
 - MiniCssExtraPlugin
+
+### BannerPlugin
+결과물에 빌드 정보나 커밋 버전같은걸 추가 할 수 있다.
+
+### DefinePlugin
+같은소스를 두 환경에서 배포하기위해 환경의존적인 정보를 소스가 아닌곳에서 관리할 수 있도록 해주는 플러그인
+
+### HtmlWebpackPlugin
+Html 파일을 후처리하는데 사용한다. 빌드 타임의 값을 넣거나 코드를 입력할 수 있다.
+
+### CleanWebpackPlugin
+빌드 이전 결과물을 제거하는 플러그인. 빌드결과물은 아웃풋경로에 모이는데 과거 파일이 남아있을수있어 전체 제거후 다시 빌드한 결과물을 가질 수 있도록 하는 플러그인
