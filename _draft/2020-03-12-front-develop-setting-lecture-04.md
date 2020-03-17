@@ -36,4 +36,62 @@ $ npx babel app.js
 - 출력
 
 
+## Babel 사용법과 웹팩 통합
+``` javascript
+$ npm i @babel/preset-nev
 
+// babel.config.js
+module.exports = {
+    presets: [
+        '@babel/preset-env'
+    ]
+}
+
+// 타겟 브라우저
+module.exports = {
+    presets: [
+        ['@babel/preset-env', {
+            targets: {
+                chrome: '79',
+                ie: '11'
+            }
+        }]
+    ]
+}
+
+// 문법변환이 해당되지 않는 코드일때는 폴리필이 필요
+module.exports = {
+    presets: [
+        ['@babel/preset-env', {
+            targets: {
+                chrome: '79',
+                ie: '11'
+            },
+            useBuiltIns: 'usage', // 'entry', false
+            corejs: {
+                version: 2, // 3
+            }
+        }]
+    ]
+}
+```
+
+
+``` javascript
+$ npx babel app.js
+
+// 바벨로 변환된 문법
+"use strict";
+
+require("core-js/modules/es6.promise"); // 추가됨
+
+require("core-js/modules/es6.object.to-string"); // 추가됨
+
+new Promise();
+```
+
+## 웹팩으로 통합
+
+``` javascript
+$ npm i -D babel-loader
+```
