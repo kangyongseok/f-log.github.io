@@ -27,11 +27,26 @@ comments:  true
 ``` javascript
 $ npm install eslint --save-dev
 $ npx eslint --init // .eslintrc 디렉토리에 파일이 생성
+// 대화형 세팅 진행
 ```
 
 ``` javascript
 // .eslintrc.js
 module.exports = {
+    "env": {
+        "browser": true,
+        "es6": true
+    },
     "extends": "eslint:recommended",
-}
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+    }
+};
 ```
