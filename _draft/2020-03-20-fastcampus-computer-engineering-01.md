@@ -9,6 +9,7 @@ tags:
     - computer
     - study
     - engineering
+    - 컴퓨터 구조
 toc: true
 toc_sticky: true
 comments:  true
@@ -28,3 +29,16 @@ comments:  true
 
 ---
 
+## 컴퓨터의 구성
+
+### 소프트웨어
+- 시스템 소프트웨어 `ex) 운영체제 등`
+- 응용 소프트웨어 `ex) 엑셀 등`
+  
+### 하드웨어
+- 입력장치  
+    ```
+    마우스, 키보드, 터치스크린  
+    플로피 디스크 판독기  
+    자기 테이프 구동장치  
+    ```
