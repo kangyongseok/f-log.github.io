@@ -27,7 +27,7 @@ rootRef.child("str").setValue("string value - hello")
 rootRef.child("array").setValue(["a", "b", "c"])
 rootRef.child("dict").setValue(["id": "someId", "age": 43, "city": "Seoul"])
 ```
-
+![image](https://raw.githubusercontent.com/kangyongseok/kangyongseok.github.io/master/assets/images/firebase_database_01.png)
 
 **복잡한 형태의 데이터 저장**
 
@@ -108,3 +108,5 @@ struct Book {
         return dict
     }
 ```
+
+![image](https://raw.githubusercontent.com/kangyongseok/kangyongseok.github.io/master/assets/images/firebase_database_03.png)
