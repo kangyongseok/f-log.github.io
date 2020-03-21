@@ -28,6 +28,7 @@ rootRef.child("array").setValue(["a", "b", "c"])
 rootRef.child("dict").setValue(["id": "someId", "age": 43, "city": "Seoul"])
 ```
 
+
 **복잡한 형태의 데이터 저장**
 
 ``` swift
