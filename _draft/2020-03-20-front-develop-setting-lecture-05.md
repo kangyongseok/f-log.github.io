@@ -93,3 +93,38 @@ $ npm i -D eslint-plugin-prettier
 
 $ npx exlint app.js --fix // 이 명령어 하나면 한번에 적용 가능
 ```
+
+## 자동화
+매번 코딩할때마다 `npm run` 을 통해서 린트를 실행하기에는 번거롭다 이를 자동화하는 방법이 있다. 깃 훅을 사용하면 커밋전 또는 푸시전 등 깃 명령어 실행 시점에 끼어들 수 있는 훅을 제공할 수 있다.
+``` javascript
+$ npm i -D husky
+
+// package.json
+{
+    "husky": {
+        "hooks": {
+            "pre-commit": "eslint app.js --fix"
+        }
+    }
+}
+```
+
+위와같이 husky 를 설치하고 package.json 을 설정하면 커밋전에 린트검사를 진행하고 에러가 발생하면 커밋을 진행하지 않게된다.  
+
+그러나 프로젝트의 규모가 커질수록 린트의 검사속도도 증가하기때문에 모든 파일이 아니라 커밋이 진행된 파일에 대해서만 린트를 검사해줄 필요가 있다. 
+
+``` javascript
+$ npm i -D lint-staged
+
+// package.json
+{
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.js": "eslint --fix"
+    }
+}
+```
