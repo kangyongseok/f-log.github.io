@@ -50,3 +50,24 @@ module.exports = {
     }
 };
 ```
+
+## Prettier
+코드를 더 예쁘게 만들어 준다. 일관성있는 코드 스타일로 다듬어준다.
+
+``` javascript
+$ npm i -D prettier
+```
+
+실행하게되면 일부 `lint` 와 겹치는 부분이 있기때문에 중복되는 부분을 제거해서 통합하여 사용할 수 있게 만들어 주는 방법이 있다.
+
+``` javascript
+$ npm i -D eslint-config-prettier
+
+// .eslintrc.js
+{
+    extends: [
+        "eslint:recommended",
+        "eslint-config-prettier" // 추가된 내용
+    ]
+}
+```
