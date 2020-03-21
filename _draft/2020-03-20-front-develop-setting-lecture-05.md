@@ -56,12 +56,15 @@ module.exports = {
 
 ``` javascript
 $ npm i -D prettier
+$ npx eslint app.js --fix
+
 ```
 
 실행하게되면 일부 `lint` 와 겹치는 부분이 있기때문에 중복되는 부분을 제거해서 통합하여 사용할 수 있게 만들어 주는 방법이 있다.
 
 ``` javascript
 $ npm i -D eslint-config-prettier
+$ npx prettier app.js --write
 
 // .eslintrc.js
 {
@@ -70,4 +73,23 @@ $ npm i -D eslint-config-prettier
         "eslint-config-prettier" // 추가된 내용
     ]
 }
+```
+
+매번 두번씩 실행시키는것도 불편하다 한번에 실행가능하게 변경 가능하다
+
+``` javascript
+$ npm i -D eslint-plugin-prettier
+
+// .eslintrv.js
+{
+    ...
+    plugins: [
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": "error"
+    }
+}
+
+$ npx exlint app.js --fix // 이 명령어 하나면 한번에 적용 가능
 ```
