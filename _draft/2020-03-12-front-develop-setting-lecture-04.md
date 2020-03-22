@@ -38,7 +38,14 @@ $ npx babel app.js
 
 ## Babel 사용법과 웹팩 통합
 ``` javascript
-$ npm i @babel/preset-nev
+// 바벨에서 목적에 따라 제공하는 프리셋
+
+$ preset-env // 과거에 버전별로 바벨 설치가 달랐지만 env 하나로 통합됨
+$ preset-flow // flow 를 변환하기 위한 프리셋
+$ preset-react // React 를 변환하기 위한 프리셋
+$ preset-typescript // typescript 를 변환하기 위한 프리셋
+
+$ npm i @babel/preset-env
 
 // babel.config.js
 module.exports = {
@@ -96,4 +103,5 @@ new Promise();
 $ npm i -D babel-loader
 ```
 
-<!-- 커밋을 위한 주석 추가....... -->
+
+
