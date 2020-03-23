@@ -62,3 +62,76 @@ module.exports = {
 `historyApiFallback`: 히스토리 API 를 사용하는 SPA 개발시 설정. 404가 발생하면 index.html로 리다이렉트 한다.  
   
 개발서버 실행시 `--progress` 를 추가하면 빌드 진행을 보여준다.
+
+  
+
+### API 서버연동
+서버와 `api` 연결전 목업데이터를 자체적으로 생성해서 개발을 진행 할 수 있다.  
+
+``` javascript
+// webpack.config.js
+module.exports = {
+    ...
+    devServer: {
+        before: app => {
+            app.get('/api/users', (req, res) => {
+                res.json([
+                    {
+                        id: 1,
+                        name: "Alice"
+                    },
+                    {
+                        id: 2,
+                        name: "kang"
+                    }
+                ])
+            })
+        }
+    }
+}
+```
+
+생성한 `api` 데이터를 불러와 사용하기 위해 `axios` 를 설치하여 사용한다.
+
+``` javascript
+$ npm i -D axios
+
+// app.js
+import axios from 'axios';
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const res = await axios.get('/api/users')
+    console.log(res)
+})
+
+```
+
+만약 만들어야하는 목업 데이터가 여러개라면 아래의 방법을 사용할 수 있다.
+
+``` javascript
+$ npm i -D connect-api-mocker
+
+// mocks/api/users/GET.json
+[
+    {
+        "id": 1,
+        "name": "kang"
+    },
+    {
+        "id": 2,
+        "name": "yong"
+    }
+]
+
+// webpack.config.js
+const apimocker = require('connect-api-mocker')
+module.exports = {
+    ...
+    devServer: {
+        before: app => {
+           app.use(apiMocker('/api', 'mocks/api'))
+        }
+    }
+}
+
+```
