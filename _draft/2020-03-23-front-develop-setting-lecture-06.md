@@ -135,3 +135,45 @@ module.exports = {
 }
 
 ```
+
+### 핫 모듈 리플레이스먼트
+변경된 모듈에 대해서만 자동으로 수정해서 화면에 출력하여 결과를 보여줌
+
+``` javascript
+// webpack.config.js
+devServer: {
+    hot: true,
+}
+
+// src/app.js
+import form from './form';
+import result from './result';
+
+let resultEl;
+let formEl;
+
+document.addEventListener("DOMContentLoaded", async () => {
+    formEl = document.creatteElement("div");
+    formEl.innerHTML = await form.render();
+    document.body.appendChild(formEl);
+
+    resultEl = document.creatteElement("div");
+    resultEl.innerHTML = await result.render();
+    document.body.appendChild(resultEl);
+});
+
+
+if (module.hot) {
+    console.log("핫 모듈 켜짐");
+
+    module.hot.accept("./result", async () => {
+        console.log("result 모듈 변경됨")
+        resultEl.innderHTML = await result.render();
+    })
+
+    module.hot.accept("./form", async () => {
+        formEl.innderHTML = await form.render();
+    })
+}
+```
+
