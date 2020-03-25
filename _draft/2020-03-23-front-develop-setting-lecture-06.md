@@ -177,3 +177,66 @@ if (module.hot) {
 }
 ```
 
+## 최적화
+코드가 많아지면 번들링된 결과물도 커진다. 이는 브라우저의 성능에 영향을 줄 수 있으므로 최적화가 필요하다.  
+
+
+#### mode 로 최적화
+``` javascript
+// webpack.config.js
+const mode = process.env.NODE_ENV || 'development'
+
+module.exports = {
+    mode,
+    ....
+}
+```
+
+### optimazation 속성으로 최적화
+`HtmlWebpackPlugin` 이 `html` 을 압축시킨것처럼 `css` 파일도 빈칸을 없애는 압축을 하는것이 가능하다.
+``` javascript
+$ npm i -D optimize-css-assets-webpack-plugin
+
+// webpack.config.js
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+module.exports = {
+    optimization: {
+        minimizer: mode === 'production' ? [
+            new OptimizeCSSAssetsPlugin(),
+        ] : [],
+    }
+}
+```
+
+### TerserWebpackPLugin
+자바스크립트코드를 난독화하고 debugger 구문을 제거한다. 이 기본옵션 외에도 console.log 를 제거해주는 옵션도 있다.
+
+``` javascript
+$ npm i -D terser-webpack-plugin
+
+// webpack.config.js
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
+module.exports = {
+    optimization: {
+        minimizer: mode === 'production' ? [
+            new OptimizeCSSAssetsPlugin(),
+            new TerserPlugin({
+                terserOptions: {
+                    compress: {
+                        drop_console: true, // 콘솔로그 제거
+                    }
+                }
+            }),
+        ] : [],
+    }
+}
+```
+
+
+### 코드 스플리팅
+
+### 다이나믹 임포트
+
+### externals
