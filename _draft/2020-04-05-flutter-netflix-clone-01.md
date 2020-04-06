@@ -18,3 +18,10 @@ toc: true
 toc_sticky: true
 comments:  true
 ---
+
+flutter setting...
+
+
+## 참고
+[Flutter 공식문서](https://flutter.dev/docs/get-started/install/macos)
+[mac 에 vscode 로 Flutter 설치하기](https://skuld2000.tistory.com/83)
