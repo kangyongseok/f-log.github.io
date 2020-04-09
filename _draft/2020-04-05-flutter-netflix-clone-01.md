@@ -97,7 +97,9 @@ void main() => runApp(MyApp());
 `MyApp() `이라는 커스텀 위젯을 제일 처음 실행할 위젯으로 잡는다.
   
 ``` dart
+// 스크린 레이아웃을 빌드하는 역할을 한다.
 class MyApp extends StatefulWidget {
+    // Framework가 StatefulWidget 을 만들경우 createState() 가 즉시 호출된다.
   _MyAppState createState() => _MyAppState();
 }
 ```
@@ -108,6 +110,21 @@ class MyApp extends StatefulWidget {
 `StatelessWidget` 은 `단 한번 만 Build` 과정이 일어난다. 때문에, 한번 그려진 화면은 계속 유지되며, 성능 상 장점이 생긴다.
   
 `StatefulWidget` 은 `state` 를 포함하며, `setState` 가 발생할때마다 다시 `Build` 과정이 일어난다. 때문에, 동적 화면을 쉽게 구현이 가능하다.
+
+#### createState()
+`createState()` 함수는 `buildContext`가 `state`에 할당되게 된다.
+
+#### TabController controller
+Tab을 사용하기 위해서는 선택된 탭과 컨텍트 세션이 동기화가 되어야 하는데 이러한 작업을 해주는 역할을 한다.
+
+### Widget build(BuildContext context) {}
+위젯마다 하나씩 갖게되고 빌드된 모든 위젯 트리구조 내의 위젯 위치에대한 참조이다.   
+만약 위젯 A가 하위 위젯을 갖고 있다면 위젯 A의 `BuildContext` 는 하위 `BuildContext`의 상위 `BuildContext` 가 된다
+
+### return MaterialApp()
+`Material` 디자인을 사용할 수 있다. 일반적으로 필요한 여러 위젯을 래핑 할 수 있다.
+- `title`: 이 속성은 응용 프로그램에 대한 간단한 설명을 사용자에게 제공하는데 사용. 사용자가 모바일에서 최근 앱버튼 을 누르면 제목으로 표시됨  
+- `theme`: 이 특성은 애플리케이션의 테마 색상과 같은 애플리케이션에 기본 테마를 제공. 이를위해 `ThemeData()` 라는 내장 클래스 / 위젯을 사용
 
 ## 참고
 [Flutter 공식문서](https://flutter.dev/docs/get-started/install/macos)  
