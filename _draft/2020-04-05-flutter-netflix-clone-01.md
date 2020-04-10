@@ -117,14 +117,21 @@ class MyApp extends StatefulWidget {
 #### TabController controller
 Tab을 사용하기 위해서는 선택된 탭과 컨텍트 세션이 동기화가 되어야 하는데 이러한 작업을 해주는 역할을 한다.
 
-### Widget build(BuildContext context) {}
+#### Widget build(BuildContext context) {}
 위젯마다 하나씩 갖게되고 빌드된 모든 위젯 트리구조 내의 위젯 위치에대한 참조이다.   
 만약 위젯 A가 하위 위젯을 갖고 있다면 위젯 A의 `BuildContext` 는 하위 `BuildContext`의 상위 `BuildContext` 가 된다
 
-### return MaterialApp()
+#### return MaterialApp()
 `Material` 디자인을 사용할 수 있다. 일반적으로 필요한 여러 위젯을 래핑 할 수 있다.
 - `title`: 이 속성은 응용 프로그램에 대한 간단한 설명을 사용자에게 제공하는데 사용. 사용자가 모바일에서 최근 앱버튼 을 누르면 제목으로 표시됨  
 - `theme`: 이 특성은 애플리케이션의 테마 색상과 같은 애플리케이션에 기본 테마를 제공. 이를위해 `ThemeData()` 라는 내장 클래스 / 위젯을 사용
+
+#### DefaultTabController()
+ TabBar 또는 TabBarView 와 TabController 를 공유하는 데 사용되는 상속 된 위젯
+ - length: 탭의 갯수를 지정
+ - child: 위젯 아래의 위젯
+ - NeverScrollableScrollPhysics(): 화면을 터치하여 물리적으로 슬라이드를 이동할수 없도록 막는것
+ - BottomNavigationBar: 일반적으로 3~5 사이의 적은 수의 뷰 중에서 선택하기위해 앱 하단에 표시되는 머티어리얼 위젯이다.
 
 ## 참고
 [Flutter 공식문서](https://flutter.dev/docs/get-started/install/macos)  
