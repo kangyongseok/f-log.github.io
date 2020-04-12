@@ -127,11 +127,11 @@ Tab을 사용하기 위해서는 선택된 탭과 컨텍트 세션이 동기화�
 - `theme`: 이 특성은 애플리케이션의 테마 색상과 같은 애플리케이션에 기본 테마를 제공. 이를위해 `ThemeData()` 라는 내장 클래스 / 위젯을 사용
 
 #### DefaultTabController()
- TabBar 또는 TabBarView 와 TabController 를 공유하는 데 사용되는 상속 된 위젯
- - length: 탭의 갯수를 지정
- - child: 위젯 아래의 위젯
- - NeverScrollableScrollPhysics(): 화면을 터치하여 물리적으로 슬라이드를 이동할수 없도록 막는것
- - BottomNavigationBar: 일반적으로 3~5 사이의 적은 수의 뷰 중에서 선택하기위해 앱 하단에 표시되는 머티어리얼 위젯이다.
+ `TabBar` 또는 `TabBarView` 와 `TabController` 를 공유하는 데 사용되는 상속 된 위젯
+ - `length`: 탭의 갯수를 지정
+ - `child`: 위젯 아래의 위젯
+ - `NeverScrollableScrollPhysics()`: 화면을 터치하여 물리적으로 슬라이드를 이동할수 없도록 막는것
+ - `BottomNavigationBar`: 일반적으로 3~5 사이의 적은 수의 뷰 중에서 선택하기위해 앱 하단에 표시되는 머티어리얼 위젯이다.
 
 ## 참고
 [Flutter 공식문서](https://flutter.dev/docs/get-started/install/macos)  
