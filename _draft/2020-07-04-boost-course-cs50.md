@@ -40,3 +40,39 @@ int main(void)
 ```console
 make string
 ```
+
+## 조건문과 루프
+```c
+if (x < y)
+{
+    printf('x 는 y 보다 더 작다\n');
+}
+else if (x > y)
+{
+    printf('x 는 y 보다 더 크다\n');
+}
+else
+{
+    printf('x 와 y 는 같다');
+}
+
+// 무한 반복
+while(true)
+{
+    printf('hello, world\n');
+}
+
+// i 가 0부터 50이 될떄까지 반복
+int i = 0
+while(i < 50)
+{
+    printf('hello, world\n');
+    i++
+}
+
+// 위의 while 문과 같은 결과가 나온다.
+for(int i = 0; i < 50; i++)
+{
+    printf('hello, world\n');
+}
+```
