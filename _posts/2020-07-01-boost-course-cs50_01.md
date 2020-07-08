@@ -1,5 +1,5 @@
 ---
-title: "부스트코스 - 모두를 위한 컴퓨터 과학 (CS50 2019) 01"
+title: "부스트코스 - 모두를 위한 컴퓨터 과학 (CS50 2019) - 컴퓨팅 사고"
 categories: 
   -  boostcourse
 tags: 
