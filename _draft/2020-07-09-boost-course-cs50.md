@@ -180,3 +180,18 @@ Else
 ```
 
 재귀함수는 자기 자신을 호출 여기서는 Search 함수를 반복적으로 호출하여 행위의 반복을 하면서 코드의 양을 줄일 수 있다.
+
+## 병합정렬 (or 합병정렬)
+
+배열의 원소가 한개가 될때까지 계속해서 반으로 나누다가 왼쪽과 오른쪽 절반씩을 합쳐나가면서 정렬하는 방식, 재귀적으로 동작하기 떄문에 재귀에 대한 이해가 필요하다.
+
+```c
+// 의사코드
+if only one item
+    Return
+Else
+    Sort left half of items
+    Sort right half of items
+    Merge sorted halves
+```
+[7, 4, 5, 2, 6, 3, 8, 1]  
