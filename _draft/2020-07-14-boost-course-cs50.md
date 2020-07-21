@@ -140,4 +140,63 @@ int main(void)
 }
 ```
 
-asd
+## 메모리교환 스택, 힙
+
+만약 서로 다른 음료가 들어있는 두컵이 있을때 이 두 음료를 서로 각각 다른 컵으로 바꿔 담고싶을때 어떻게 해야할까?  
+주어진 조건이 이 두개의 컵만 있다면 아마 불가능할것이다 물리적으로는 그러나 만약 빈컵이 하나 더있다면? 아주 쉽게 두 컵의 내용물을 스위칭 가능할것이다.  
+
+메모리에 저장되어있는 값을 이렇게 서로 스위칭 하려면 어떻게 해야할까?
+
+```c
+#include <stdio.h>
+
+void swap(int a, int b);
+
+int main(void)
+{
+  int x = 1;
+  int y = 2;
+
+  printf("x is %i, y is %i\n", x, y);
+  swap(x, y);
+  printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int a, int b)
+{
+  int tmp = a;
+  a = b;
+  b = tmp;
+}
+```
+
+위의코드를 실행하게되면 swap 함수가 정상 동작하지만 결과값은 전혀 바뀌지 않은것을 볼 수 있다. 문제가 무엇일까?   
+
+바로 메모리에 저장된 값을 스위칭하는것이 아니라 복제된 값을 스위칭하기 때문이다. 즉 swap 함수가 실행되어도 본래 메모리에 저장된 x 와 y 의값이 바뀌진 않는다.  
+
+a, b, x, y, tmp 모두 스텍 영역에 저장되지만 ab 와 xy는 서로 다른 위치에 저장된 변수일 뿐이다.
+이 문제를 해결하려면 a와 b 가 x, y를 가리키는 포인터로 지정하게되면 값의 복사가 아닌 원래 저장되어있던 x와 y의 값을 스위칭 하는것이 가능하다.
+
+
+```c
+#include <stdio.h>
+
+void swap(int a, int b);
+
+int main(void)
+{
+  int x = 1;
+  int y = 2;
+
+  printf("x is %i, y is %i\n", x, y);
+  swap(&x, &y);
+  printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int *a, int *b)
+{
+  int tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+```
