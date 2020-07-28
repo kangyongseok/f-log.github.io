@@ -63,6 +63,54 @@ $ make hello
 ### 링킹
 마지막으로 여러곳에 따로 작성되어져있던 코드들을 하나의 파일로 합치는 작업이 진행된다.
 
+## 배열
+
+여러가지 자료형  
+- bool 1byte - (예) True, False, 1, 0, yes, no
+- char(%c) 1byte - 문자 하나 (예) 'a', 'Z', '?'
+- int(%i) 4byte - 특정 크기 또는 특정 비트까지의 정수 (예) 5, 28, -3, 0
+- float(%f) 4byte - 부동소수점을 갖는 실수 (예) 3.14, 0.0, -28.56
+- long(%li) 8byte - 더 큰 크기의 정수
+- double 8byte - 부동소수점을 포함한 더 큰 실수
+
+```c
+#include <stdio.h>
+
+float average(int length, int array[]);
+
+int main(void) {
+    // before
+    // int score1 = 71;
+    // int score2 = 72;
+    // int score3 = 33;
+    // printf("Average : %i\n", (score1 + score2 + score3) / 3);
+
+    // after
+    int n;
+    printf("Number of scores: ");
+    scanf("%i", &n);
+
+    int scores[n];
+    for(int i = 0; i < n; i++) {
+        // scores[i];
+        printf("Score %i: ", i + 1);
+        scanf("%i", &scores[i]);
+    }
+    printf("Average: %.1f\n", average(n, scores));
+}
+
+float average(int length, int array[]) {
+    int sum = 0;
+    for (int i = 0; i < length; i++) {
+        sum += array[i];
+    }
+    return (float) sum / (float) length;
+}
+```
+
+여기서 score1 에 72 라는 값은 int 타입이기때문에 4byte의 메모리영역을 차지하게 된다.  
+나머지 score2, 3 도 각각 4byte 의 메모리 영역을 차지한다.
+
 
 ## 문자열
 문자열을 가진 변수들은 각각 메모리에 저장되는데 문자열같은경우 문자열이 끝났다 라는것을 구분하기위해 문자열 마지막에 항상 null 을 나타내는 0 이 포함된다.
