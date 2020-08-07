@@ -1,0 +1,420 @@
+---
+title: "부스트코스 - 모두를 위한 컴퓨터 과학 (CS50 2019) - 4주차 Mission"
+categories: 
+  -  boostcourse
+tags: 
+    - develop
+    - study
+    - edwith
+    - boostcourse
+    - cs50
+    - C
+    - 알고리즘
+    - 배열
+    - queue
+toc: true
+toc_sticky: true
+comments:  true
+---
+
+## ✔︎ 미션 1.
+
+
+### 1. 미션 제목
+숫자 애너그램 찾기
+
+ 
+
+ 
+
+### 2. 지시문
+‘애너그램’이란 문자를 재배열하여 다른 뜻을 가진 단어로 바꾸는 것을 말합니다. 예를 들면 영어의 ‘tea’와 ‘eat’과 같이, 각 단어를 구성하는 알파벳의 구성은 같지만 뜻은 다른 두 단어를 말합니다. 우리말에는 ‘문전박대’와 ‘대박전문’과 같은 예를 들 수 있습니다. 우리는 문자 대신 숫자를 이용해서 애너그램을 찾는 프로그램을 만들어봅시다. 5자리의 숫자 1쌍이 입력으로 주어지며 애너그램일 경우에는 “True”를 아닐 경우에는 “False”를 출력하도록 합시다. 숫자를 입력받는 부분은 따로 구현하지 않고 프로그램 내부에 배열로 선언하는 것으로 가정하고, 숫자에는 중복이 있을 수 있습니다.  
+
+
+예)  
+입력값: 12345, 54321 -> 출력값: True  
+입력값: 14258, 25431 -> 출력값: False  
+입력값: 11132, 21131 -> 출력값: True  
+
+
+### 3. 핵심 개념
+#애너그램 #정렬알고리즘
+
+ ```c
+#include <stdio.h>
+#define MAX 5
+#define TRUE 1
+#define FALSE 0
+
+void selectSort(int *arr);
+void bubbleSort(int *arr);
+void mergeSort(int *arr, int start, int end);
+void swap(int x, int y, int tmp, int *arr);
+void compare(int *x, int *y);
+void merge(int *arr, int start, int mid, int end);
+
+int selectSort_1[MAX] = {1, 2, 3, 4, 5};
+int selectSort_2[MAX] = {5, 4, 3, 0, 1};
+int bubbleSort_1[MAX] = {1, 4, 2, 5, 8};
+int bubbleSort_2[MAX] = {2, 5, 4, 3, 1};
+int recursive_1[MAX] = {1, 1, 1, 3, 2};
+int recursive_2[MAX] = {2, 1, 1, 3, 1};
+int mergeSortResult[MAX]; // 병합정렬된 배열이 들어갈 변수
+
+int main(void) {
+    selectSort(selectSort_1);
+    selectSort(selectSort_2);
+    bubbleSort(bubbleSort_1);
+    bubbleSort(bubbleSort_2);
+    mergeSort(recursive_1, 0, MAX - 1); // 배열데이터와함께 시작 과 끝 인텍스값을 넘기기때문에 MAX - 1 을 넘겨줍니다.
+    mergeSort(recursive_2, 0, MAX - 1);
+
+    compare(selectSort_1, selectSort_2);
+    compare(bubbleSort_1, bubbleSort_2);
+    compare(recursive_1, recursive_2);
+
+    return 0;
+}
+
+void selectSort(int *arr) {
+    // 선택정렬
+    // n개의 배열중 가장 작은값을 찾아 0부터 n-1 번째까지 반복문 돌면서 0번 인덱스부터 스왑
+    for (int i = 0; i < MAX - 1; i++) {
+        int minIndex = i;
+        int tmp;
+        for (int j = i + 1; j < MAX; j++) {
+            if (arr[minIndex] > arr[j]) {
+                minIndex = j;
+            }
+        }
+        if (i != minIndex) { // 자기 자신이 최소값일때 swap 하지않음
+            swap(i, minIndex, tmp, arr);
+        }
+    }
+}
+
+void bubbleSort(int *arr) {
+    // 버블정렬
+    // n 개의 배열을 돌면서 n 과 n + 1 의 값을 비교하여 n + 1 이 더 작다면 swap
+    // 정렬이 진행될때마다 제일 오른쪽 배열부터는 더이상 비교할 필요가 없어 그만큼 비교횟수를 -1 해줘야한다.
+    int tmp;
+    for(int i = 0; i < MAX -1; i ++) {
+        for (int j = 0; j < MAX - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(j, j + 1, tmp, arr);
+            }
+        }
+    }
+}
+
+void mergeSort(int *arr, int start, int end) {
+    // 재귀정렬
+    if (start < end) {
+        int mid = (start + end) / 2;
+        // printf("mid: %d\n", mid);
+        mergeSort(arr, start, mid); // 배열의 처음부터 중간까지
+        mergeSort(arr, mid + 1, end); // 배열의 중간 다음배열부터 마지막 배열까지
+        merge(arr, start, mid, end); // mergeSort 의 실행이 모두 끝나야 merge 함수실행
+    }
+}
+
+// 기타 사용 함수
+void swap(int x, int y, int tmp, int *arr) {
+    tmp = arr[x];
+    arr[x] = arr[y];
+    arr[y] = tmp;
+}
+
+void compare(int *x, int *y) {
+    int result;
+    for (int i = 0; i < MAX; i++) {
+        if (x[i] != y[i]) {
+            result = FALSE;
+            break;
+        } else {
+            result = TRUE;
+        }
+    }
+    printf("입력값: %d%d%d%d%d, %d%d%d%d%d ", x[0], x[1], x[2], x[3], x[4], y[0], y[1], y[2], y[3], y[4]);
+    printf("출력값: %s\n", result == 0 ? "False" : "True");
+}
+
+void merge(int *arr, int start, int mid, int end) {
+    int i = start;
+    int j = mid + 1;
+    int k = start; // 정렬된 배열을 담을 변수의 index
+    // printf("mid :%d start: %d end: %d\n", mid, start, end);
+    while(i <= mid && j <= end) { 
+        if (arr[i] <= arr[j]) { // 앞의 값보다 뒤의값이 크거나 같은지
+            mergeSortResult[k] = arr[i];
+            i++;
+        } else { // 뒤에비교하는 숫자가 더 작을경우
+            mergeSortResult[k] = arr[j];
+            j++;
+        }
+        k++;
+    }
+
+    if (i > mid) { // while 문에서 배열에 할당하지 못한 나머지 값을 여기서 할당한다.
+        for(int t = j; t <= end; t++) {
+            mergeSortResult[k] = arr[t];
+            k++;
+        }
+    } else {
+        for(int t = i; t <= mid; t++) {
+            mergeSortResult[k] = arr[t];
+            k++;
+        }
+    }
+    for (int t = start; t <= end; t++) { // 정렬된 배열을 원래 배열에 넣는다.
+        arr[t] = mergeSortResult[t];
+    }
+}
+ ```
+
+   
+## ✔︎ 미션 2.
+
+
+### 1. 미션 제목
+친구들과 최단거리에 있는 집 구하기
+
+ 
+
+ 
+
+### 2. 지시문
+David의 친구들은 한 거리에 모두 모여살고 있습니다. David은 이번에 친구들이 살고 있는 거리로 이사를 가기로 했는데, 친구들의 집에서 거리가 가장 가까운 집을 구해서 그곳으로 이사를 하고 싶습니다. 모두 같은 거리에 살고 있으므로 아래 그림과 같이 친구들의 집 위치를 수직선 상에 표현할 수 있고, 그 때 집은 항상 정수점 위에만 있다고 가정합니다.
+
+  
+이 때, David이 어느 위치에 있는 집으로 이사를 가야 모든 친구들의 집까지의 거리의 합이 최소가 될 수 있는지 생각해보고 이를 출력하는 프로그램을 작성해봅시다. 그리고 이 때 이 프로그램의 시간복잡도(Big O)가 얼마나 되는지 얘기해봅시다. 어떻게 하면 시간복잡도를 최소화할 수 있을지도 같이 생각해봅시다. 집이 있을 수 있는 위치는 한자리 정수로만 구성되며, 숫자를 입력받는 부분은 따로 구현하지 않고 프로그램 내부에 배열로 선언하는 것으로 가정하고, 숫자에는 중복이 있을 수 있습니다.
+  
+예)  
+입력값: 12345 -> 출력값: 3  
+입력값: 2224 -> 출력값: 2  
+* 2224의 경우 2에 3명이 같이 사는 것으로 보실 수 있지만 문제상 같은 위치에 여러명이 살 수 있다는 가정으로 풀어주세요^^  
+
+ 
+  
+
+### 3. 핵심 개념
+#거리의합이최소 #중앙값 #평균값
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+// #include <math.h>
+#define TRUE 1
+#define FALSE 0
+
+// 요구사항 자체가 거리를 예시로들면서 정해진 순서대로 숫자가 입력된다고 보았습니다.
+// 요구사항에는 없는 정렬코드가 들어가게되면 불필요한 로직이 생기고 불필요한 실행시간이 소요되기때문에 순수하게 거리의 센터위치를 구현하는데 중점을 두었습니다.
+// 정렬 관련된 문제가 아닌것같아서 저는 모든 값은 이미 정렬된 순서대로 들어온다고 가정하고 코드를 작성하였습니다.
+// 입력된 배열 내에서 센터에 가장 근접한 값을 찾아 리턴하는 문제라고 이해하고 접근하였습니다.
+int inputData_1[4] = {0, 4, 6, 9};
+int inputData_2[4] = {2, 2, 2, 4};
+int inputData_3[6] = {1, 2, 3, 5, 7, 9};
+int inputData_4[6] = {1, 2, 10, 23, 31, 35};
+
+// void getIntArrSize(int *arr);
+void findCenterHouse(int arr[], int count);
+int averageDistance(int arr[], int count);
+
+int main(void) {
+    clock_t start, end;
+    double result;
+    start = clock(); //시간 측정 시작
+    findCenterHouse(inputData_1, sizeof(inputData_1) / sizeof(int));
+    findCenterHouse(inputData_2, sizeof(inputData_2) / sizeof(int));
+    findCenterHouse(inputData_3, sizeof(inputData_3) / sizeof(int));
+    findCenterHouse(inputData_4, sizeof(inputData_4) / sizeof(int));
+
+    end = clock(); //시간 측정 끝
+    result = (double)(end - start);
+    printf("실행시간: %.0f\n", result);
+
+    return 0;
+}
+
+void findCenterHouse(int arr[], int count) {
+    int average = averageDistance(arr, count);
+    int isCenterHouse = FALSE;
+    for (int i = 0; i < count; i++) { // 평균 지점과 일치하는 값이 배열에 있을때
+        if(arr[i] == average) {
+            isCenterHouse = average;
+            break;
+        }
+    }
+    if (isCenterHouse == FALSE) { // 평균 지점과 일치하는 센터값이 배열에 없을때
+        int maxOfSmallValue; // 평균값보다 작은값중에 가장 큰값
+        int minOfBigValue; // 평균값보다 큰값중에 가장 작은값
+
+        for(int i = 0; i < count; i++) { // 센터값과 가장 근사치에있는 양쪽의 값을 구함
+            if (average > arr[i]) {
+                // printf("평균값보다 작은 배열의 값: %d\n", arr[i]);
+                maxOfSmallValue = arr[i];
+            } else {
+                // printf("평균값보다 큰 배열의 값: %d\n", arr[i]);
+                minOfBigValue = arr[i];
+                break;
+            }
+        }
+
+        // printf("a: %d\n", a);
+        // printf("b: %d\n", b);
+        // 선택값과 근사치로 있는 양쪽의 값을 구했으면 
+        // 근사치에서 가장 작은값을 빼고 가장 큰 값에서 큰사치를 뺴서 양쪽 거리의 격차값이 더 작은쪽이 센터
+        if (abs((maxOfSmallValue - arr[0]) - (arr[count - 1] - maxOfSmallValue)) < abs((minOfBigValue - arr[0]) - (arr[count - 1] - minOfBigValue))) {
+            isCenterHouse = maxOfSmallValue;
+        } else {
+            isCenterHouse = minOfBigValue;
+        }
+    }
+    printf("Center House: %d\n", isCenterHouse);
+}
+
+int averageDistance(int arr[], int count) { // 평균 거리를 갖는 지역의 정수를 반환
+    int sum = 0;
+    int average = 0;
+    for (int i = 0; i < count; i++) {
+        sum += arr[i];
+    }
+    average = sum / count;
+    // printf("Averrage Distance: %d\n", average);
+    return average;
+}
+
+```
+
+
+
+## ✔︎ 미션 3.
+
+
+### 1. 미션 제목
+최단 시간에 다리건너기
+
+ 
+
+ 
+
+### 2. 지시문
+N명의 사람들로 구성된 한 그룹이 밤중에 다리를 건너려고 합니다. 한 번에 최대 두 명 까지만 다리를 건널 수 있으며 다리 위를 지나가는 사람들은 반드시 손전등을 가지고 가야 합니다. n명의 사람들한테는 손전등이 한 개밖에 없기 때문에 남아 있는 사람들이 다리를 건너려면 어떤 식으로든 손전등을 가지고 다시 다리를 건너지 않은 사람들이 있는 곳으로 돌아가는 일을 해야합니다. 사람마다 다리를 건너는 속도가 다른데, 그룹의 속도는 가장 느린 구성원의 속도에 따라 결정됩니다. 가장 짧은 시간 안에 n명이 모두 다리를 건널 수 있는 방법과 그 시간을 출력하는 프로그램을 작성해봅시다.
+  
+
+입력으로 첫 줄에는 n이 입력되며 그 다음 줄부터 n개의 줄에 걸쳐서 각 사람들이 다리를 건너는 시간이 입력됩니다. 입력은 100명을 넘기지 않습니다.
+  
+
+출력은 맨 첫 줄에는 n명의 사람들이 모두 다리를 건너는데 걸리는 총 시간을 출력하고, 그 다음줄부터는 그 과정을 출력하면 됩니다. 이 때 각 줄에는 정수가 하나 또는 두 개가 들어가는데, 이 정수는 어떤 사람들이 다리를 건너가는지를 나타냅니다. 각 사람은 그 사람이 건너가는데 걸리는 시간으로 표시하며, 건너가고 오는 순서대로 출력해야 합니다. 최소 시간을 달성하는 방법이 여러가지가 있을 경우 그 중 아무 방법이나 출력해도 괜찮습니다. 완전한 프로그램을 작성하기 어려운 경우에는 pseudo code를 작성해도 좋습니다. 다만 이 경우에는 최대한 자세히 적어야 합니다. 숫자를 입력받는 부분은 따로 구현하지 않고 프로그램 내부에서 따로 선언하는 것으로 가정합니다.
+
+
+예)  
+입력값:  
+4   
+1   
+2   
+5   
+10
+  
+
+출력값:  
+17  
+1 2  
+1  
+5 10  
+2  
+1 2  
+
+
+
+### 3. 핵심 개념
+#정렬알고리즘
+
+```c
+// 아직 해결 중....
+```
+
+
+## ✔︎ 미션 4 (난이도 최상).
+
+
+### 1. 미션 제목
+가장 큰 낙하거리 찾기
+
+ 
+
+ 
+
+### 2. 지시문
+상자들이 쌓여있는 방이 있습니다. 방이 오른쪽으로 90도 회전하여 상자들이 중력의 영향을 받아 낙하한다고 할 때, 낙하거리가 가장 큰 상자를 구하여 그 낙하거리를 출력하는 프로그램을 작성해 봅시다. 아래 그림에서 총 26개 상자가 회전 후, 오른쪽 그림과 같은 상태가 됩니다. A상자의 낙하거리가 7로 가장 크므로 7을 출력하면 됩니다. 회전 결과, B 상자의 낙하거리는 6이고, C상자의 낙하거리는 1입니다.
+![](https://cphinf.pstatic.net/mooc/20200731_238/15962069483497Se1W_PNG/mceclip0.png)
+
+
+중력은 회전이 완료된 이후에 적용되며, 상자들은 모두 한쪽 벽면에 붙여진 상태로 쌓여 2차원의 형태를 이루며 벽에서 떨어져서 쌓인 상자는 없습니다. 입력으로는 첫 줄에 각 방의 가로 길이 N(2 ≤ N ≤ 100)과 방의 세로 길이 M(2 ≤ N ≤ 100)이 주어지며, 다음 줄에는 N개의 상자들이 쌓여있는 높이 H(0 ≤ H ≤ M)가 주어집니다. 가장 직관적인 방법은 MxN내의 모든 box에 대해서 낙하거리를 계산한 뒤 정렬 알고리즘을 사용하여 최댓값을 찾으면 되는 문제라고 생각할 수 있습니다. 이 방법은 시간 복잡도(Big O)가 얼마나 될 지 먼저 생각해봅시다. 그리고, 이보다 더 효율적인 방법으로 프로그램을 작성해봅시다. 완전한 프로그램을 작성하는 것이 힘들 경우에는 pseudo code로 작성해도 좋습니다. 다만 이 경우에는 최대한 자세히 적어야 합니다. 숫자를 입력받는 부분은 따로 구현하지 않고 프로그램 내부에서 따로 선언하는 것으로 가정합니다.
+
+ 
+
+예)  
+입력값:  
+9 8 // 방의 가로 길이 N, 세로 길이 M  
+7 4 2 0 0 6 0 7 0 // 상자들이 쌓여있는 높이  
+출력값:  
+7 // 가장 큰 낙하거리  
+
+   
+
+### 3. 핵심 개념
+# 최대값찾기
+
+```c
+#include <stdio.h>
+#define HORIZONTAL 9
+#define VERTICAL 8 // 세로길이는 별로 의미가 없네요?
+
+/*
+문제에서 원하는 출력값은 낙차값중에 가장 큰값입니다.
+따라서 개별 박스의 낙차를 구하기보다는 해당 열에있는 박스중 가장 낙차값이 크게 나오는 숫자를
+resultArr 배열에 저장하고
+그리고 이 배열에서 가장 큰 값을 출력하는 방식으로 생각하고 코드를 작성했습니다.
+90도 회전 어쩌구하는건 일단 무시했습니다.
+*/
+
+int dropTheBox[HORIZONTAL] = {7, 4, 2, 0, 0, 6, 0, 7, 0};
+int resultArr[HORIZONTAL];
+
+void vertical_drop(int dropTheBox[], int horizontal);
+
+int main(void) {
+    vertical_drop(dropTheBox, HORIZONTAL);
+    int max = 0;
+    printf("result array: ");
+    for (int i = 0; i < HORIZONTAL; i++) { // 낙차값 배열중 가장 큰 값을 추출하는 코드 입니다.
+        printf("%d ", resultArr[i]);
+        if (max < resultArr[i]) {
+            max = resultArr[i];
+        }
+    }
+    printf("\n");
+    printf("result: %d", max);
+    return 0;
+}
+
+void vertical_drop(int dropTheBox[], int horizontal) {
+    for (int i = 0; i < horizontal; i++) {
+        int countMax = 0; // countMax 는 비교하려는 값(dropTheBox[i]) 보다 같거나 큰값이 몇개나 있는지 얻어오는 변수입니다.
+        for (int j = i; j < horizontal; j++) { // 비교하려는 값보다 큰값들을 찾습니다.
+            if (dropTheBox[i] <= dropTheBox[j] && dropTheBox[i] != 0) {
+                countMax += 1;
+            }
+        }
+        if (dropTheBox[i] == 0) { // arr[i] 가 0일경우 resultArr에 그대로 0을 넣어줍니다.
+            resultArr[i] = 0;
+        } else {
+            // horizontal 은 90도 회전했을경우 떨어질 높이값이 됩니다.
+            // 그래서 낙차값을 총 높이 - 아래박스가 현재 박스보다 크거나 같은 박스의 갯수 - 그리고 떨어질때마다 +1씩 낙차값이 올라가는데 자기 자신이 위치한 칸은 제외해야 하므로 i 를 빼줍니다.
+            resultArr[i] = horizontal - countMax - i;
+        }
+    }
+}
+```
