@@ -74,20 +74,20 @@ int main(void) {
 3. data 멤버에 데이터 저장
 4. 마지막 노드라면 next 멤버에 NULL 저장
 */
-typedef struct node {
+typedef struct node { // node 는 구조체의 이름
   int number;
   struct node *next; // 노드의 구조체를 가리키도록 정의
-}node;
+}node; // 구조체의 별명
 
 int main() {
-  struct NODE *head = malloc(sizeof(struct NODE)); // 머리노드 기준점이기때문에 별도의 데이터를 
+  node *head = malloc(sizeof(struct node)); // 머리노드 기준점이기때문에 별도의 데이터를 
   저장하지는 않는다.
 
-  struct NODE *node1 = malloc(sizeof(struct NODE)); // 실제 노드를 생성
+  node *node1 = malloc(sizeof(struct node)); // 실제 노드를 생성
   head->next = node1; // 머리노드에 next 에 첫번째 노드의 주소를 저장 (head 의 next 는 node1을 가르키고 있음)
   node1->data = 10; // node1 의 data 에 10을 저장
 
-  struct NODE *node2 = malloc(sizeof(struct NODE)); // 실제 노드를 생성
+  node *node2 = malloc(sizeof(struct node)); // 실제 노드를 생성
   node1->next = node2;
   node2->data = 20;
 
@@ -97,6 +97,22 @@ int main() {
 ```
 
 ## 연결리스트: 코딩
+```c
+node *n = malloc(sizeof(node));
+(*n).number = 2; // 이렇게 값을 할당해줘도 되지만
+n->number = 2; // 이렇게 훨씬 보기좋게 사용이 가능하다.
+n->next = NULL; // 다음값이 아직 없기때문에 NULL 로 입력한다.
+```
+좀더 정확하게 체크하기위해서 아래와 같은 코드로 작성할 수 있다.
+```c
+node *n = NULL;
+node *n = malloc(sizeof(node));
+if (n != NULL) { //
+  n->number = 2;
+  n->next = NULL;
+}
+list = n;
+```
 
 ## 연결리스트: 시연
 
