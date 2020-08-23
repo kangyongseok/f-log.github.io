@@ -83,8 +83,123 @@ c 에도 있을지 모르겠지만 javascript 같은경우 코드스타일을 �
 
 
 ## 배열(1)
+**C 의 다양한 자료형**
+```c
+bool // 1bytes
+char // 1bytes
+int // 4bytes
+float // 4bytes
+long // 8bytes
+double // 8bytes
+string // ? bytes
+```
+
+**C 샘플코드 01**
+```c
+#include <stdio.h>
+
+int main(void)
+{
+  char c1 = 'H'; // 문장을 쓸때는 "" 을 쓰지만 한글자일떄는 '' 로 구분해서 작성한다.
+  char c2 = 'I';
+  char c3 = '!';
+
+  printf("%c %c %c\n", c1, c2, c3); // HI!
+  // 정수로 출력하기위해 형변환
+  printf("%i %i %i\n", (int) c1, (int) c2, (int) c3); // 72, 73, 33
+}
+```
+
+**C 샘플코드 02**
+```c
+#include <stdio.h>
+
+int main(void)
+{
+  int score1 = 72;
+  int score2 = 73;
+  int score3 = 33;
+
+  printf("Average: %i\n", (score1 + score2 + score3) / 3);
+}
+```
+위 코드는 세과목 점수의 평균을 구하는 코드이다.  아무 문제없이 동작하는 코드이지만 몇가지 문제점이 존재한다.
+- 부분점수 즉 소수점이하의 점수 표현이 안된다.
+- 과목 점수가 하드코딩이라 다른 학생의 점수에 대해서는 동적으로 입출력이 불가능하다.
+- 입력받는 값과 변수는 다르지만 중복되어 보이는 코드가 존재한다.
+
+
+**C 샘플코드 03**
+```c
+#include <stdio.h>
+
+int main(void)
+{
+ int scores[3];
+ scores[0] = 72;
+ scores[1] = 73;
+ scores[2] = 33;
+
+ printf("Average %i\n", (scores[0] + scores[1] + scores[2]) / 3);
+}
+```
+
+샘플코드 02 에서 조금 개선했지만 여전히 중복되어 보이는 코드도 보이고 코드의 라인이 줄어든것처럼 보이지도 않는다.
+
 
 ## 배열(2)
+위의 코드는 여전히 가독성이 떨어진다. 반복사용된 코드도 여전히 보인다. 하드코딩되어있어 동적으로 입출력을 하는것이 불가능하다.  
+
+**C 샘플코드 04**
+```c
+#include <stdio.h>
+
+const int N = 3; // 전역변수로 상수 지정, 어느곳에서 사용하던 같은 값을 갖게 된다.
+
+int main(void)
+{
+ int scores[N]; // 전역변수 상수 사용
+ scores[0] = 72;
+ scores[1] = 73;
+ scores[2] = 33;
+
+ printf("Average %i\n", (scores[0] + scores[1] + scores[2]) / N); // 전역변수 상수 사용
+}
+```
+
+조금더 코드를 수정해서 동적으로 유연성있게 만들어보자
+
+**C 샘플코드 05**
+```c
+#include <stdio.h>
+
+float average(int length, int array[]);
+
+int main(void)
+{
+  int n = get_int("Number of scores: ");
+  int scores[n];
+
+  for (int i = 0; i < n; i++)
+  {
+    scores[i] = get_int("Score %i: ", i);
+  }
+
+  printf("Average: %.1f\n", average(n, scores));
+}
+
+// 사용자 함수 생성
+float average(int length, int array[])
+{
+  int sum = 0;
+  for (int i = 0; i < length; i++)
+  {
+    sum += array[i];
+  }
+  return (float) sum / (float) length; // 정수를 정수로 나누면 정수를 출력하기때문에 형변환 필요
+}
+```
+
 
 ## 문자열과 배열
 
@@ -92,38 +207,3 @@ c 에도 있을지 모르겠지만 javascript 같은경우 코드스타일을 �
 
 ## 명령행 인자
 
-
-
-
-
-## 컴파일링
-```c
-#include <stdio.h>
-#include <cs50.h>
-
-int main(void)
-{
-    printf("hello, world!\n");
-}
-```
-
-```terminal
-$ clang -o hello hello.c -lcs50
-or
-$ make hello
-```
-
-지금까지 위와같은 형태로 계속 실습을 하면서 명령어를 통해 컴파일링을 하고 실행을 했었는제 저 명령어가 정확히 어떤 방식으로 동작하는지 생각해볼 필요성이 있다.  
-
-처음강의에서 컴퓨터는 0과 1로만 이루어져있다고 했다. 그렇다면 c 에서 사용하는 소스코드와 명령어를 어떻게 컴퓨터는 받아들일까?  
-
-```terminal
-$ clang -o hello hello.c -lcs50
-or
-$ make hello
-```
-
-바로 이 컴파일 실행 명령어를 통해 작성한 소스코드는 어셈블리어로 대체되고 이 어셈블리어는 다시 0과 1로 이루어진 데이터로 변형된다. 그리고 `#include`로 불러와진 함수들의 모음을 가진 라이브러리 파일들도 함께 포함시켜 컴파일하면서 하나의 출력파일로 만들고 컴퓨터는 이를 읽어들일 수 있게된다.
-
-## 문자열
-문자열을 가진 변수들은 각각 메모리에 저장되는데 문자열같은경우 문자열이 끝났다 라는것을 구분하기위해 문자열 마지막에 항상 null 을 나타내는 0 이 포함된다.
