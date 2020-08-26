@@ -202,8 +202,44 @@ float average(int length, int array[])
 
 
 ## 문자열과 배열
+int 형을 가지는 하나의 숫자는 4바이트의 메모리 크기를 가진다. char 형을 가지는 한 문자는 1byte 의 메모리 영역을 갖는다. 
+```c
+string string = "HI!"; // string 은 cs50 라이브러리를 사용했을때만 정의 할 수 있는 형태
+```
+위와같이 정의했을때 하나의 글자이지만 사실은 H,  I,  ! 의 3byte 영역을 갖는 글자 배열이라고도 볼 수 있다. 문자열에서 특이한점은 종단문자인 `\0 or null` 의값을 항상 마지막에 갖는다는것이다. 이유는 이 문자의 배열의 끝이 어딘지 표시하기위한 c 언어의 특징이라고도 볼 수있다. 이는 8비트를 모두 0으로 처리되는 값이다.
+
+즉 HI! 가 차지하고있는 메모리영역은 3byte 가 아니라 4byte라고 볼 수 있다.
 
 ## 문자열의 활용
+사용자로부터 입력받은 문자를 대문자로 변환하는 프로그램 만들어보기
+```c
+#include <stdio.h>
+#include <string.h> // strlen() 문자열의 길이를 반환해주는 함수를 갖고있는 라이브러리
+
+char *get_string(char *text) { // cd50 의 get_string 함수를 흉내낸것
+    static char str[100];
+    printf("%s", text);
+    scanf("%s", str);
+    return (char*)str;
+}
+
+int main(void) {
+    char s[2]; // string 으로 문자열을 받는 형식이 따로 없기때문에 char 로 배열값을 임의로지정
+    s[0] = *get_string("Before: ");
+    s[1] = *get_string("Before: ");
+
+    printf("After: ");
+    for (int i = 0, n = strlen(s); i < n; i++) {
+        if (s[i] >= 'a' && s[i] <= 'z') {
+          // ASCII 코드 번호를보면 알파벳 대문자와 소문자의 차이는 32만큼의 동일한 차이가 나는데 그걸 이용하여 소문자를 대문자로 변환
+            printf("%c ", s[i] - 32); 
+        } else {
+            printf("%c ", s[i]);
+        }
+    }
+}
+```
 
 ## 명령행 인자
+
 
