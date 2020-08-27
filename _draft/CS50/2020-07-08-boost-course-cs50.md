@@ -241,5 +241,32 @@ int main(void) {
 ```
 
 ## 명령행 인자
+```c
+#include <stdio.h>
+
+// cs50 에서는 string 타입이 있기때문에 char *argv[] => string artgv[] 로 나온다.
+int main(void) => int main(int argc, char *argv[])
+```
+c 프로그래밍의 제일 시작점인 main 함수에 지금껏 void 만 사용해 왔는데 `int argc, char *argv[]` 이런 형태의 인자값을 넘겨주면서 시작 할 수도있다.
+  
+- argc 메인함수에 전달되는 정보의 갯수를 의미
+- argv 메인함수에 전달되는 실질적인 데이터로 문자열의 배열을 의미한다.
+
+```c
+#include <stdio.h>
+
+ int main(int argc, char *argv[]) {
+   if (argc == 2) {
+     printf("hello, %s\n", argv[1]);
+   } else {
+     printf("hello, world\n");
+   }
+ }
+```
+
+위와 같이 코드를 작성하고 파일을 실행하면서 한칸띄우고 뒤에 문자열을 입력하면 해당 문자열을 바로 main 함수를 실행하면서 출력하게된다.
+  
+이러한것들을 명형행 인자라고 한다.
+
 
 
