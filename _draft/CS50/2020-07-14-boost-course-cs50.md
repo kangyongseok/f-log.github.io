@@ -228,6 +228,14 @@ int main(void) {
 ```
 
 ## 메모리 교환, 스택, 힙
+**입력받은 두 데이터 교환**
+```c
+void swap(int a, int b) {
+  int tmp = a;
+  a = b;
+  b - tmp;
+}
+```
 
 ## 파일 쓰기
 
