@@ -9,6 +9,8 @@ tags:
     - 프로그래머스
     - 알고리즘풀이
     - 연습
+    - 그리디(탐욕법) 알고리즘
+    - 탐욕법
 toc: true
 toc_sticky: true
 comments:  true
