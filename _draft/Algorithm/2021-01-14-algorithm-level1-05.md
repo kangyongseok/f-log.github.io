@@ -51,3 +51,99 @@ Single(S), Double(D), Triple(T)은 점수마다 하나씩 존재한다.
 5	1D#2S*3S	5	12 * (-1) * 2 + 21 * 2 + 31  
 6	1T2D3D#	-4	13 + 22 + 32 * (-1)  
 7	1D2S3T*	59	12 + 21 * 2 + 33 * 2  
+
+## 문제 풀이 설명
+일단 이건 좀 하드하게 풀었다.  
+어떤 규칙성이나 어떤 기준으로 코드를 작성해야할지 잘 보이지 않아서 조금 애를 먹었다.  
+  
+일단 주어진값은 문자열 형태로 주어지고 이걸 배열화 시켜야만한다. 카카오 해설을 보니 정규표현식을 사용해서 푼사람들도 있다는데 이 하드하게푼걸 다시 정규표현식을 사용해서 풀어볼 생각이다. 어쨋든 배열화 시킨 문자열을 보너스기준으로 코드가 실행되도록하였다.
+  
+S 일때 T 일때 D 일때  
+  
+우선 이 다트게임의 문자열은 가장 긴 길이가 12자가 될수있다.
+```javascript
+10S*10D#10T*
+```
+
+가장 짧은 길이는 6자가 된다
+```javascript
+1S2D3T
+```
+
+한자릿수 점수만 있었다면 좀 쉬웠겠지만 10이라는 두자릿수가 있다보니까 코드가 좀더 복잡해지고 길어졌던것같다. 실제로 문제를 풀었던 사람들중에서도 전체 실행코드는 통과했는데 테스트는 통과 못하는경우가 바로 이 10에대한 처리가 제대로 되지 않아서다.
+  
+일단 나는 `[0, 0, 0]` 으로 이루어진 빈 배열을 만들었고 조건에따라 각각의 계산된 점수를 저 배열에 0대신 치환되도록 하였다.  
+
+그리고 배열의 값을 모두 더해서 값을 리턴하게 만들었다.
+
+## 문제 풀이 코드
+```javascript
+function solution(dartResult) {
+    var answer = 0;
+    const arr = dartResult.split("")
+    let result = [0, 0, 0];
+    arr.map((t, i) => {
+        switch(t) {
+            case 'S': 
+                let a = null;
+                // 영역을 기준으로 -2위치에 1이 있다면 그 값을 10이기때문에 10을 하드코드로 넣어주었다.
+                if (Number(arr[i - 2]) === 1) a = Math.pow(10, 1)
+                // 그 이외의 경우에는 영역보다 이전값이 무조건 점수 이기때문에 거듭제곱을 진행했다.
+                if (Number(arr[i - 2]) !== 1) a = Math.pow(arr[i - 1], 1)
+                // 영역문자열의 위치에 따라 몇번째 합의 값인지 넣어주도록 하였다.
+                if (i <= 2) result.splice(0, 1, a)
+                if (i > 2 && i < 5 && dartResult.length <= 7) result.splice(1, 1, a)
+                if (i > 2 && i < 6 && dartResult.length > 7) result.splice(1, 1, a)
+                if (i >= 5 && dartResult.length <= 7) result.splice(2, 1, a)
+                if (i >= 6 && dartResult.length > 7) result.splice(2, 1, a)
+                break;
+            case 'T':
+                let b = null;
+                if (Number(arr[i - 2]) === 1) b = Math.pow(10, 3)
+                if (Number(arr[i - 2]) !== 1) b = Math.pow(arr[i - 1], 3)
+                if (i <= 2) result.splice(0, 1, b)
+                if (i > 2 && i < 5 && dartResult.length <= 7) result.splice(1, 1, b)
+                if (i > 2 && i < 6 && dartResult.length > 7) result.splice(1, 1, b)
+                if (i >= 5 && dartResult.length <= 7) result.splice(2, 1, b)
+                if (i >= 6 && dartResult.length > 7) result.splice(2, 1, b)
+                break;
+            case 'D':
+                let c = null;
+                if (Number(arr[i - 2]) === 1) c = Math.pow(10, 2)
+                if (Number(arr[i - 2]) !== 1) c = Math.pow(arr[i - 1], 2)
+                if (i <= 2) result.splice(0, 1, c)
+                if (i > 2 && i < 5 && dartResult.length <= 7) result.splice(1, 1, c)
+                if (i > 2 && i < 6 && dartResult.length > 7) result.splice(1, 1, c)
+                if (i >= 5 && dartResult.length <= 7) result.splice(2, 1, c)
+                if (i >= 6 && dartResult.length > 7) result.splice(2, 1, c)
+                break;
+            case '*':
+                // 몇번째 던진 다트의 값인지 필요한 이유는 바로 이 옵션때문이다.
+                // 해당 옵션의 위치에 따라 몇번째값까지 2배를 해줄건지 계산이 필요하다
+                if (i < 3) result.splice(0, 1, result[0] * 2)
+                if (i > 3 && i <= 5) {
+                    result.splice(0, 1, result[0] * 2)
+                    result.splice(1, 1, result[1] * 2)
+                }
+                if (i > 5) {
+                    result.splice(1, 1, result[1] * 2)
+                    result.splice(2, 1, result[2] * 2)
+                }
+                break;
+            case '#':
+                if (i < 3) result.splice(0, 1, result[0] * -1)
+                if (i > 3 && i <= 5) {
+                    result.splice(1, 1, result[1] * -1)
+                }
+                if (i > 5) {
+                    result.splice(2, 1, result[2] * -1)
+                }
+                break;
+            default:
+                break;
+        }
+    })
+    answer = result.reduce((a, b) => a + b)
+    return answer;
+}
+```
