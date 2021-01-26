@@ -1,7 +1,7 @@
 ---
 title: "모바일의 브라우저별 input type=file 처리방법"
 categories: 
-  - frontend
+  - write
 tags: 
     - os
     - mobile

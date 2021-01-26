@@ -1,7 +1,7 @@
 ---
 title: "해커랭크 - Skills Certified JS"
 categories: 
-  - frontend
+  - write
 tags: 
     - hackerrank
     - javascript
