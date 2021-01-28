@@ -66,3 +66,40 @@ comments:  true
 | ["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"]   | [2,3,4] | ["AC", "ACDE", "BCFG", "CDE"]     |
 | ["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"] | [2,3,5] | ["ACD", "AD", "ADE", "CD", "XYZ"] |
 | ["XYZ", "XWY", "WXA"]                             | [2,3,4] | ["WX", "XY"]                      |
+
+## 문제풀이
+해당관련문제에 대해서 찾아보다가 이러한 알고리즘을 푸는걸 **브루트포스** 라고 한다. 말이 좀 어려워보여서그렇지 그냥 무식하게 모든 경우의 수를 다 구해서 알고리즘을 해결하는 거의 모든 알고리즘에 대입 가능한 방법이다.
+  
+모든경우의 수를 탐색하면된다고 하지만 파이썬으로는 여러가지 모듈을 사용해서 간단하게 코드로 구현이 되는것같았다. 자바스크립트로 구현하려니 머리가 좀 빠개지는데 아무튼 시작해보려고 한다.
+
+## 코드풀이
+일단 생각한 접근은 모든 경우의 수를 하나의 배열에 담아 경우의수가 담긴 배열을 루프돌면서 중복되는 값의 카운트가 가장 많은것을 다시 최종 결과배열에 넣고 정렬하는것으로 생각했다.
+
+```javascript
+function solution(orders, course) {
+    var answer = [];
+    const result = []
+    orders.map((order, i) => {
+        const orderArr = order.split('').sort(); // 주문목록을 각각의 배열로 나누고 정렬한다.
+        orderArr.map((a, j) => {
+            const arr = [];
+            course.map(num => {
+                let join = '';
+                for (let k = j; k < j + num && k < orderArr.length; k++) {
+                    join += orderArr[k];
+                }
+                if (!arr.includes(join) && join.length >= 2) {
+                    arr.push(join)
+                }
+            })  
+            if (arr.length > 0) {
+               // console.log(arr)
+                result.push(arr)
+            }
+        })
+    })
+    const allList = result.reduce((a, b) => a.concat(b));
+   
+    return answer;
+}
+```
