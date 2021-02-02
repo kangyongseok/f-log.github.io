@@ -1,14 +1,11 @@
 ---
 title: "친구알고리즘"
 categories: 
-  -  Algorithm
+  -  write
 tags: 
     - Algorithm
     - coding
     - javascript
-    - 프로그래머스
-    - 알고리즘풀이
-    - 연습
 toc: true
 toc_sticky: true
 comments:  true
