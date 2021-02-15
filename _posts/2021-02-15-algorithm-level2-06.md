@@ -47,14 +47,14 @@ comments:  true
 ```javascript
 function solution(progresses, speeds) {
     var answer = [];
-    let updateDate = [];
     let result = [];
-    progresses.map((percent, i) => { // 각 프로세스별로 며칠째에 배포가되는지 구함
+
+    const updateDate = progresses.map((percent, i) => { // 각 프로세스별로 며칠째에 배포가되는지 구함
         let day = 0;
         for (let j = percent; j < 100; j = j + speeds[i]) {
             day = day + 1
         }
-        updateDate.push(day)
+        return day
     })
 
     let prev = updateDate[0];
@@ -76,3 +76,25 @@ function solution(progresses, speeds) {
     return answer;
 }
 ```
+
+## 다른사람의 풀이
+```javascript
+function solution(progresses, speeds) {
+    let answer = [0];
+    let days = progresses.map((progress, index) => Math.ceil((100 - progress) / speeds[index]));
+    let maxDay = days[0];
+
+    for(let i = 0, j = 0; i< days.length; i++){
+        if(days[i] <= maxDay) {
+            answer[j] += 1;
+        } else {
+            maxDay = days[i];
+            answer[++j] = 1;
+        }
+    }
+
+    return answer;
+}
+```
+
+접근방법은 동일한데 그 과정 풀이가 훨씬 간결한것같다. 나는 보이는 그대로에서 코드를 적용하였고 이 풀이는 수학적 풀이로 접근한것으로 보인다.  

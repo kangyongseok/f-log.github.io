@@ -47,14 +47,14 @@ comments:  true
 ```javascript
 function solution(progresses, speeds) {
     var answer = [];
-    let updateDate = [];
     let result = [];
-    progresses.map((percent, i) => { // 각 프로세스별로 며칠째에 배포가되는지 구함
+
+    const updateDate = progresses.map((percent, i) => { // 각 프로세스별로 며칠째에 배포가되는지 구함
         let day = 0;
         for (let j = percent; j < 100; j = j + speeds[i]) {
             day = day + 1
         }
-        updateDate.push(day)
+        return day
     })
 
     let prev = updateDate[0];
