@@ -148,3 +148,160 @@ export const api = {
     },
 };
 ```
+
+일단 구조관련해서 어느정도 수정사항은 진행했습니다. 나머지 수정사항을 진행하기전에 어떤 코드구조를 갖고있고 어떻게 읽어나가서 어느부분을 수정하면 되는지 알아보도록 하겠습니다.
+
+## 코드 구조 파악
+```js
+// main.js
+import App from './App.js';
+new App(document.querySelector("#App"));
+```
+`main.js` 는 자바스크립트의 제일 처음 진입점입니다. 때문에 html 에서도 main.js 만 스크립트로 불러왔고 나머지 파일은 제거했습니다. main.js 에서 App.js 를 불러와 클래스로 선언된 App 객체를 new 식별자로 호출하고 html 에 있던 `id="App"` 을 선택해서 매개변수로 넘겨줍니다.
+
+### 자바스크립트 Class 문법
+자바스크립트에서 Class 는 ES6 에서 도입된 문법으로 원래는 없던 문법입니다. 자바나 다른 객체지향언어에 있던 클래스 문법을 비슷하게 흉내냈다고 볼 수 있는데요 자바스크립트에서는 이 클래스문법또한 하나의 객체이자 함수라고 볼 수 있습니다.
+  
+다만 new 라는 식별자를 무조건 붙여서 호출해야하고 Class 문법일때만 갖는 특징이 몇가지 있어서 일반적인 함수 호출과는 차별점을 두고 사용합니다.
+
+```js
+class ClassTest {} // class 식별자로 선언
+new ClassTest() // 인스턴스 생성
+```
+위와같이 선언하고 호출(인스턴스 생성)하여 사용하면 됩니다. class 만 갖는 특징을 확인해보겠습니다.
+  
+class 식별자를 사용하고있지만 클래스만의 특징을 내부적으로 갖고있지만 호출방식을 보면 함수입니다. 때문에 호출하면서 매개변수를 넘겨줄수도있고 클래스내에서는 `constructor` 로 전달받아 초기화를 시킬 수 있습니다.
+
+```js
+class ClassTest {
+    a = 1;
+    b = 2;
+}
+new ClassTest() // {a: 1, b: 2} // 인스턴스 생성
+```
+
+class 로 선언한 함수를 호출하게되면 객체가 생성됩니다. 함수처럼 매개변수로 값을 넘겨주는건 constructor 로 받아서 사용할 수 있습니다.
+
+```js
+class ClassTest {
+    constructor(target) {
+        this.target = target
+    }
+}
+new ClassTest('target') // {target: "target"}
+```
+
+`this.target` 에서 this 는 생성한 객체 자기 자신을 가리킵니다. `ClassTest` 에 target 이란 키로 넘어온 매개변수값을 할당하겠다고 초기화 시키는 작업을 여기서 진행합니다. `constructor` 는 생성자라고 부르고 하나의 클래스에 하나의 constructor 만 사용할 수 있습니다.
+  
+클래스내에서는 static 이라는 키워드로 정적 속성을 만들어 줄 수 있는데 이 정적속성으로 만들어진 객체는 인스턴스를 생성하여 사용이 불가능합니다. 
+
+```js
+class ClassTest {
+    static name = "홍길동"
+}
+
+const test = new ClassTest(); // 인스턴스 생성
+test.name // undefined
+ClassTest.name // 홍길동
+```
+
+### class App 분석
+```js
+
+export default class App {
+    $target = null;
+    data = [];
+
+    constructor($target) {
+        this.$target = $target;
+
+        this.searchInput = new SearchInput({
+            $target,
+            onSearch: keyword => {
+                api.fetchCats(keyword).then(({ data }) => this.setState(data));
+            }
+        });
+
+        this.searchResult = new SearchResult({
+            $target,
+            initialData: this.data,
+            onClick: image => {
+                this.imageInfo.setState({
+                    visible: true,
+                    image
+                });
+            }
+        });
+
+        this.imageInfo = new ImageInfo({
+            $target,
+            data: {
+                visible: false,
+                image: null
+            }
+        });
+    }
+
+    setState(nextData) {
+        console.log(this);
+        this.data = nextData;
+        this.searchResult.setState(nextData);
+    }
+}
+
+```
+긴 코드에 겁먹지말고 하나씩 보도록하겠습니다.
+
+```js
+export default class App {
+    $target = null;
+    data = [];
+    ...
+}
+```
+위에 저 두값은 뭐냐면 public 필드에 선언된 초기화된 변수라고 보면됩니다. 인스턴스를 생성해보면
+```js
+{ $target: null, data: Array(0) }
+```
+이렇게 객체 형태로 만들어 집니다. App 클래슨 내부에 다른 컴포넌트들이 인스턴스호출되어있는데 하위컴포넌트 즉 클래스객체에도 공통으로 사용될 전역변수같은거라고 보시면 됩니다.
+
+```js
+constructor($target) {
+    this.$target = $target;
+
+    this.searchInput = new SearchInput({
+        $target,
+        onSearch: keyword => {
+            api.fetchCats(keyword).then(({ data }) => this.setState(data));
+        }
+    });
+
+    this.searchResult = new SearchResult({
+        $target,
+        initialData: this.data,
+        onClick: image => {
+            this.imageInfo.setState({
+                visible: true,
+                image
+            });
+        }
+    });
+
+    this.imageInfo = new ImageInfo({
+        $target,
+        data: {
+            visible: false,
+            image: null
+        }
+    });
+}
+```
+`constructor` 가 꽤 긴데 main.js 에서 넘겨주고있는 `document.querySelector("#App")` 을 `$target` 이란 이름으로 받아서 this.$target 에 초기화 해 주었습니다.
+  
+그리고 각각 페이지의 컴포넌트를 담당할 인스턴스들을 생성하고 초기화 하였습니다.
+```js
+this.searchInput = new SearchInput()
+this.searchResult = new SearchResult()
+this.imageInfo = new ImageInfo()
+```
+생성한 인스턴스로 필요한 데이터객체들을 넘겨주고있습니다.
