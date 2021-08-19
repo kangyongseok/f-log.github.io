@@ -305,3 +305,34 @@ this.searchResult = new SearchResult()
 this.imageInfo = new ImageInfo()
 ```
 생성한 인스턴스로 필요한 데이터객체들을 넘겨주고있습니다.
+
+
+```js
+this.searchInput = new SearchInput({
+    $target,
+    onSearch: keyword => {
+        api.fetchCats(keyword).then(({ data }) => this.setState(data));
+    }
+});
+```
+SearchInput 에 public 에 선언하고 초기화한 $target 객체와 onSearch 라는 함수객체를 전달합니다.
+
+```js
+ this.searchResult = new SearchResult({
+    $target,
+    initialData: this.data,
+    onClick: image => {
+        this.imageInfo.setState({
+            visible: true,
+            image
+        });
+    }
+});
+```
+
+SearchResult 에도 $target 과 public 에 선언한 data 를 전달하고 onClick 함수객체를 넘겨주고 있습니다. 각 인스턴스를 생성하면서 넘겨주는 메소드들은 매개변수로 리턴값을 전달받아 처리하고 있습니다. `SearchResult` 는 매개변수를 전달받아 `imageInfo` 에 setState 함수를 호출하면서 객체를 전달합니다.
+
+### class SearchInput 분석
+
+
+### class SearchResult 분석
