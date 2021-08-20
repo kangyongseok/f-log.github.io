@@ -333,6 +333,35 @@ SearchInput 에 public 에 선언하고 초기화한 $target 객체와 onSearch 
 SearchResult 에도 $target 과 public 에 선언한 data 를 전달하고 onClick 함수객체를 넘겨주고 있습니다. 각 인스턴스를 생성하면서 넘겨주는 메소드들은 매개변수로 리턴값을 전달받아 처리하고 있습니다. `SearchResult` 는 매개변수를 전달받아 `imageInfo` 에 setState 함수를 호출하면서 객체를 전달합니다.
 
 ### class SearchInput 분석
+```js
+export default class SearchInput {
+
+  constructor({ $target, onSearch }) {
+
+    const $searchInput = document.createElement("input");
+
+    this.$searchInput = $searchInput;
+    this.$searchInput.placeholder = "고양이를 검색해보세요.|";
+
+    $searchInput.className = "SearchInput";
+    $target.appendChild($searchInput);
+
+    $searchInput.addEventListener("keyup", e => {
+      if (e.keyCode === 13) {
+        onSearch(e.target.value);
+      }
+    });
+
+    console.log("SearchInput created.", this);
+  }
+
+  render() {}
+}
+```
+`SearchInput` 내부에는 크게는 `constructor`와 render 메소드가 있습니다. `constructor` 에는 App.js 에서 전달해주고있는 매개변수 객체를 받았습니다. 
+
+
+
 
 
 ### class SearchResult 분석
