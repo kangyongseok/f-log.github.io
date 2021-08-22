@@ -359,8 +359,10 @@ export default class SearchInput {
 }
 ```
 `SearchInput` 내부에는 크게는 `constructor`와 render 메소드가 있습니다. `constructor` 에는 App.js 에서 전달해주고있는 매개변수 객체를 받았습니다. 
-
-
+  
+this.$searchInput 에 생성한 input element를 바인딩하여 초기화 시키고 placeholder, classname, event 를 지정해 주었습니다. 여기서 plcaholder 는 this.$searchInput.placeholder 로 this 를 붙여서 할당해줬는데 사실 this 는 더이상 붙여주지 않아도 됩니다.
+  
+`$target` 은 main.js 에서부터 넘어온 `<div id="App"></div>` 을 받아왔고 여기에 `appendChild` 로 자식요소로 생성한 input을 추가합니다. 이 코드로 인해서 화면에 input 입력창이 보여지게되고 event 바인딩으로 인해 keycode === 13 은 enter 키의 키코드이기때문에 enter를 입력했을때 onSearch 이벤트가 실행됩니다.
 
 
 
