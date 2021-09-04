@@ -367,3 +367,4 @@ this.$searchInput 에 생성한 input element를 바인딩하여 초기화 시�
 
 
 ### class SearchResult 분석
+SearchResult 에는 검색한 고양이 목록이 나오는 컴포넌트입니다. 그리고 사진을 클릭하면 상세 모달을 띄우는 이벤트가 추가되는 곳이기도합니다.
